@@ -3226,7 +3226,7 @@ function printSimSavedOptions() {
     printWindow.document.write(`
         <html>
         <head>
-            <title>TG EAPCET 2024 - Saved Option Sheet</title>
+            <title>TG EAPCET 2026 - Saved Option Sheet</title>
             <style>
                 body { font-family: sans-serif; padding: 20px; color: #333; }
                 table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -3235,7 +3235,7 @@ function printSimSavedOptions() {
             </style>
         </head>
         <body onload="window.print()">
-            <h2>TG EAPCET 2024 - Locked Options Sheet</h2>
+            <h2>TG EAPCET 2026 - Locked Options Sheet</h2>
             <p style="margin: 2px 0;"><strong>Candidate Name:</strong> ${simCandidateName}</p>
             <p style="margin: 2px 0;"><strong>Hall Ticket Number:</strong> ${simHallTicket}</p>
             <p style="margin: 2px 0;"><strong>Rank:</strong> ${simRank}</p>
@@ -3436,7 +3436,7 @@ function handleDownloadAllotmentOrder() {
         <body onload="window.print()">
             <div class="header">
                 TELANGANA STATE COUNCIL OF HIGHER EDUCATION<br>
-                TG EAPCET - 2024 ADMISSIONS CAMP<br>
+                TG EAPCET - 2026 ADMISSIONS CAMP<br>
                 PROVISIONAL ALLOTMENT ORDER
             </div>
             <p><strong>Allotment Date:</strong> 19-07-2025</p>
@@ -3503,7 +3503,7 @@ function handleDownloadAllotmentOrder() {
             <div class="footer">
                 <br><br>
                 CONVENER<br>
-                TG EAPCET - 2024 ADMISSIONS
+                TG EAPCET - 2026 ADMISSIONS
             </div>
         </body>
         </html>
@@ -3528,7 +3528,7 @@ function handlePrintJoiningReport() {
         </head>
         <body onload="window.print()">
             <div class="header">
-                <h2>TG EAPCET - 2024 ADMISSIONS</h2>
+                <h2>TG EAPCET - 2026 ADMISSIONS</h2>
                 <h3>CANDIDATE JOINING REPORT (CONFIRMED)</h3>
             </div>
             
@@ -3600,7 +3600,7 @@ function handlePrintTransactions() {
             </style>
         </head>
         <body onload="window.print()">
-            <h2>TG EAPCET 2024 - Transaction Ledger</h2>
+            <h2>TG EAPCET 2026 - Transaction Ledger</h2>
             <p><strong>Candidate Name:</strong> ${simCandidateName}</p>
             <p><strong>Hall Ticket No:</strong> ${simHallTicket}</p>
             <hr>
@@ -3655,7 +3655,7 @@ function handlePrintAdmissionSummary() {
         </head>
         <body onload="window.print()">
             <div class="heading">
-                <h2>TG EAPCET Admissions - 2024</h2>
+                <h2>TG EAPCET Admissions - 2026</h2>
                 <h3>FINAL ADMISSION SUMMARY SHEET</h3>
             </div>
             
