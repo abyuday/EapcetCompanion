@@ -1,0 +1,537 @@
+:root {
+    --brand-purple: #8B5CF6;
+    --brand-blue: #3B82F6;
+    --soft-bg: #F8FAFC;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--soft-bg);
+    color: #334155;
+    scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Poppins', sans-serif;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.12);
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-gradient {
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.08), transparent 45%),
+        radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.08), transparent 45%);
+}
+
+.timeline-step::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 3rem;
+    bottom: -3rem;
+    width: 2px;
+    background: #E2E8F0;
+    z-index: 1;
+}
+
+@media (min-width: 768px) {
+    .timeline-step::before {
+        left: 50%;
+        top: 3.5rem;
+        bottom: -3.5rem;
+    }
+}
+
+.timeline-step:last-child::before {
+    display: none;
+}
+
+/* Drag over state styles */
+.drag-over {
+    border: 2px dashed #8B5CF6 !important;
+    background: rgba(139, 92, 246, 0.05) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Print Media Styles for PDF Export */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #pdf-print-area,
+    #pdf-print-area * {
+        visibility: visible;
+    }
+
+    #pdf-print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+/* HLC Interactive Cards & Pulse Animations */
+.hlc-card-interactive {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hlc-card-interactive:hover {
+    box-shadow: 0 12px 30px -10px rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+.animate-pulse {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    transform-origin: center;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.45;
+        transform: scale(1.15);
+    }
+}
+
+/* Fade-In Transitions for Simulator Screens */
+.animate-fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Premium Branch Cards Animation & Glow */
+@keyframes branchCardLoad {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.branch-card-animate {
+    animation: branchCardLoad 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.branch-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02), 0 2px 8px -1px rgba(0, 0, 0, 0.01) !important;
+}
+
+.branch-card:hover {
+    transform: translateY(-6px) scale(1.015) !important;
+    box-shadow: 0 25px 40px -15px rgba(139, 92, 246, 0.15), 0 10px 20px -8px rgba(59, 130, 246, 0.08) !important;
+}
+
+/* Dynamic Telangana SVG Map Styles */
+.map-district-path {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-district-path:hover {
+    fill: rgba(139, 92, 246, 0.08) !important;
+    stroke: #8b5cf6 !important;
+    stroke-width: 1.8px !important;
+    filter: drop-shadow(0 6px 16px rgba(139, 92, 246, 0.15));
+}
+
+.map-district-active {
+    fill: rgba(139, 92, 246, 0.18) !important;
+    stroke: #8b5cf6 !important;
+    stroke-width: 2.2px !important;
+    filter: url(#map-glow) !important;
+}
+
+/* Pulsating Dots Styles */
+@keyframes map-ping {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.animate-ping {
+    transform-origin: center;
+    animation: map-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scrollbar utility */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.3);
+    border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.5);
+}
+
+/* Premium Scrollbar and Selection Styling */
+.scrollbar-premium::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.scrollbar-premium::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-premium::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.25);
+    border-radius: 9999px;
+    transition: background 0.2s ease;
+}
+.scrollbar-premium::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+/* Branch and District Chip/Card glow on active state */
+.chip-glow-selected {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%) !important;
+    border-color: rgba(139, 92, 246, 0.45) !important;
+    color: #7c3aed !important;
+    box-shadow: 0 4px 15px -3px rgba(139, 92, 246, 0.12), inset 0 0 0 1px rgba(139, 92, 246, 0.1) !important;
+}
+
+.card-selected-glow {
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%) !important;
+    border-color: rgba(139, 92, 246, 0.5) !important;
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.15), 0 8px 16px -6px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Fade mask edges */
+.fade-edge-y {
+    mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* Modal scale-up and scale-down transition utility */
+.modal-show {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+/* General interactive selection chip */
+.branch-option-chip {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.branch-option-chip:hover {
+    transform: translateY(-1.5px);
+}
+
+.district-option-chip {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.district-option-chip:hover {
+    transform: translateY(-1.5px);
+}
+
+/* Explorer Card checkmark animation */
+@keyframes checkPop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.check-pop {
+    animation: checkPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* SVG interactive selection stroke highlights */
+.map-district-selected {
+    fill: rgba(139, 92, 246, 0.05) !important; /* light transparent purple fill */
+    stroke: #8b5cf6 !important; /* purple border */
+    stroke-width: 2.2px !important;
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.45)) !important; /* glowing border */
+}
+
+/* Selected active state for Helpline Centers map (blue glow) */
+.map-district-active {
+    fill: rgba(59, 130, 246, 0.05) !important; /* light transparent blue fill */
+    stroke: #3b82f6 !important; /* blue border */
+    stroke-width: 2.2px !important;
+    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.45)) !important;
+}
+
+/* Semi-bold district path boundaries */
+.map-district-path {
+    fill: #f8fafc !important; /* default light neutral fill */
+    stroke: #cbd5e1 !important; /* Slate-300 border for clean visibility */
+    stroke-width: 1.2px !important;
+    stroke-linejoin: round !important;
+    stroke-linecap: round !important;
+    cursor: pointer !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.map-district-path:hover {
+    fill: #f1f5f9 !important; /* soft highlight on hover */
+    stroke: #a78bfa !important; /* light purple highlight border */
+    stroke-width: 1.6px !important;
+    filter: drop-shadow(0 4px 10px rgba(139, 92, 246, 0.12)) !important;
+}
+
+/* Density coloring - keeping them light and pastel, not dark! */
+.map-density-low {
+    fill: #f8fafc !important;
+}
+
+.map-density-medium {
+    fill: #faf5ff !important; /* subtle purple tint */
+    stroke: #cbd5e1 !important;
+}
+
+.map-density-high {
+    fill: #f3e8ff !important; /* soft light purple */
+    stroke: #cbd5e1 !important;
+}
+
+.map-density-none {
+    fill: rgba(248, 250, 252, 0.4) !important;
+    stroke: #cbd5e1 !important;
+    opacity: 0.3 !important;
+}
+
+/* State outline path (top layer, bold) */
+.map-outer-border {
+    fill: none !important;
+    stroke: #1e1b4b !important; /* Indigo-950 */
+    stroke-width: 3.5px !important;
+    stroke-linejoin: round !important;
+    stroke-linecap: round !important;
+    pointer-events: none !important; /* Pass-through pointer events */
+    filter: drop-shadow(0 2px 8px rgba(30, 27, 75, 0.12));
+}
+/* GIS District labels with clean SVG paint-order halos */
+.map-district-label {
+    font-family: 'Outfit', 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+    fill: #0f172a !important; /* Slate-900 for absolute contrast */
+    paint-order: stroke fill !important;
+    stroke: #ffffff !important;
+    stroke-width: 2.8px !important; /* Thicker crisp white stroke to separate text from paths */
+    stroke-linejoin: round !important;
+    letter-spacing: 0.02em !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    transform-origin: center;
+}
+
+/* Adaptive size styling (Single-line sizing) */
+.map-district-label.label-size-large {
+    font-size: 11.5px !important;
+}
+.map-district-label.label-size-small {
+    font-size: 9.5px !important;
+}
+
+/* Selected state styling (Crisp & no blurring glow) */
+.map-district-label-selected {
+    fill: #4c1d95 !important; /* Indigo-900 */
+    font-weight: 850 !important;
+    stroke: #ffffff !important;
+    stroke-width: 3.2px !important;
+}
+.map-district-label-selected.label-size-large {
+    font-size: 12.5px !important;
+}
+.map-district-label-selected.label-size-small {
+    font-size: 10.5px !important;
+}
+
+/* Hover style sync styles */
+.map-district-path.hovered-path {
+    fill: #f1f5f9 !important; /* Soft premium highlight */
+    stroke: #8b5cf6 !important; /* Indigo-500 hover border */
+    stroke-width: 1.8px !important;
+    filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.15)) !important;
+    transition: all 0.2s ease !important;
+}
+
+.district-dot-group.hovered .map-district-label,
+.gen-district-dot-group.hovered .map-district-label {
+    fill: #5b21b6 !important; /* Indigo-800 for high hover contrast */
+    font-weight: 900 !important;
+    stroke-width: 3.5px !important;
+    scale: 1.12; /* Smooth scaling highlight */
+}
+
+.district-dot-group.hovered circle:first-child,
+.gen-district-dot-group.hovered circle:first-child {
+    r: 16px !important;
+    fill: rgba(139, 92, 246, 0.35) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Collapsible Map Panel Rule */
+@media (max-width: 1023px) {
+    #district-map-panel.collapsed {
+        display: none !important;
+    }
+}
+
+/* District Explorer Grid Card Custom Scrollbar and Scroll styling */
+#modal-districts-grid-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.25) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+#modal-districts-grid-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#modal-districts-grid-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#modal-districts-grid-container::-webkit-scrollbar-thumb {
+    background-color: rgba(139, 92, 246, 0.25);
+    border-radius: 10px;
+    border: 2px solid transparent;
+}
+
+#modal-districts-grid-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(139, 92, 246, 0.45);
+}
+
+/* Strong selection glow for district modal cards */
+.district-modal-card {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.district-modal-card.selected-glow {
+    border-color: rgba(139, 92, 246, 0.4) !important;
+    background-color: rgba(139, 92, 246, 0.04) !important;
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.08), 0 0 1px 1px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Minimal and modern scrollbar style */
+.scrollbar-premium {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.25) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar-premium::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-premium::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb {
+    background-color: rgba(139, 92, 246, 0.25);
+    border-radius: 10px;
+    border: 2px solid transparent;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(139, 92, 246, 0.45);
+}
+
+/* Recommendation Accordion & Dynamic Badges Styling */
+.insight-content-anim {
+    transition: all 0.25s ease-out;
+}
+
+/* Ensure smooth transition in card container and map tooltips */
+#preferences-container {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Fallback divider styles */
+.divider-expanded {
+    background: linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.6) 100%);
+    backdrop-filter: blur(8px);
+}

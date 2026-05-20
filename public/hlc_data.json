@@ -1,0 +1,1414 @@
+[
+  {
+    "sno": 1,
+    "code": "ADBP29",
+    "name": "S G GOVERNMENT POLYTECHNIC",
+    "place": "ADILABAD",
+    "district": "ADILABAD",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 2,
+    "code": "BLMP01",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "BELLAMPALLY",
+    "district": "MANCHERIAL",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 3,
+    "code": "NRML30",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "NIRMAL",
+    "district": "NIRMAL",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 4,
+    "code": "DACB28",
+    "name": "Dr. B R AMBEDKAR COLLEGE",
+    "place": "BAGHLINGAMPALLY",
+    "district": "HYDERABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 5,
+    "code": "JNGP02",
+    "name": "J.N. GOVERNMENT POLYTECHNIC",
+    "place": "RAMANTHAPUR",
+    "district": "MEDCHAL",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 6,
+    "code": "JNTH06",
+    "name": "JNTU COLLEGE OF ENGINEERING",
+    "place": "KUKATPALLY",
+    "district": "MEDCHAL",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      },
+      {
+        "dates": "04-07-2025 to 07-07-2025",
+        "categories": "NCC (NATIONAL CADET CORPS) & OC/EWS/BC/SC/ST/MINORITIES"
+      },
+      {
+        "dates": "08-07-2025",
+        "categories": "PHC (PHYSICALLY CHALLENGED) & OC/EWS/BC/SC/ST/MINORITIES & ANGLO-INDIAN"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 7,
+    "code": "MASB40",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "MASAB TANK",
+    "district": "HYDERABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 03-07-2025",
+        "categories": "CAP (CHILDREN OF ARMED FORCES PERSONNEL) & SPORTS (SG) & OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 8,
+    "code": "QQHD04",
+    "name": "Q.Q. GOVERNMENT POLYTECHNIC",
+    "place": "CHANDULAL BARADARI",
+    "district": "HYDERABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 9,
+    "code": "UCSS31",
+    "name": "UNIVERSITY COLLEGE OF SCIENCE (BEHIND GOLCONDA HOTEL)",
+    "place": "MASAB TANK",
+    "district": "HYDERABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 10,
+    "code": "GPWS03",
+    "name": "GOVERNMENT POLYTECHNIC FOR WOMEN",
+    "place": "EAST MARREDPALLY",
+    "district": "HYDERABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 11,
+    "code": "UPGG33",
+    "name": "UNIVERSITY PG COLLEGE",
+    "place": "GODAVARIKHANI",
+    "district": "PEDDAPALLI",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 12,
+    "code": "GDCJ35",
+    "name": "SKNR GOVERNMENT DEGREE COLLEGE",
+    "place": "JAGTIAL",
+    "district": "JAGTIAL",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 13,
+    "code": "GMRK08",
+    "name": "Dr. B. R. AMBEDKAR GMR POLYTECHNIC FOR WOMEN",
+    "place": "KARIMNAGAR",
+    "district": "KARIMNAGAR",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 14,
+    "code": "SRRS22",
+    "name": "SRRS GOVERNMENT POLYTECHNIC",
+    "place": "SIRCILLA",
+    "district": "RAJANNA SIRCILLA",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 15,
+    "code": "SRBK09",
+    "name": "SR & BGNR GOVERNMENT DEGREE COLLEGE",
+    "place": "KHAMMAM",
+    "district": "KHAMMAM",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 16,
+    "code": "KTGM10",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "RUDRAMPUR",
+    "district": "BHADRADRI KOTHAGUDEM",
+    "days": 6,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 06-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 17,
+    "code": "MBNR11",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "MAHABUBNAGAR",
+    "district": "MAHABUBNAGAR",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 18,
+    "code": "GDCP27",
+    "name": "S V GOVERNMENT DEGREE COLLEGE",
+    "place": "PALEM",
+    "district": "NAGARKURNOOL",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 19,
+    "code": "GDWL23",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "GADWAL",
+    "district": "JOGULAMBA GADWAL",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 20,
+    "code": "WNPT21",
+    "name": "K.D.R GOVERNMENT POLYTECHNIC",
+    "place": "WANAPARTHY",
+    "district": "WANAPARTHY",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 21,
+    "code": "MDKW12",
+    "name": "GOVERNMENT POLYTECHNIC FOR WOMEN",
+    "place": "MEDAK",
+    "district": "MEDAK",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 22,
+    "code": "SGRD34",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "SANGA REDDY",
+    "district": "SANGA REDDY",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 23,
+    "code": "SDPT13",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "RAJGOPALPET",
+    "district": "SIDDIPET",
+    "days": 6,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 06-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 24,
+    "code": "NALG15",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "NALGONDA",
+    "district": "NALGONDA",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 25,
+    "code": "SRPW32",
+    "name": "GOVT. POLYTECHNIC FOR WOMEN",
+    "place": "SURYAPET",
+    "district": "SURYAPET",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 26,
+    "code": "YDGR25",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "YADAGIRIGUTTA",
+    "district": "YADADIRI BHUVANAGIRI",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 27,
+    "code": "GDCK37",
+    "name": "GOVERNMENT ARTS AND SCIENCE COLLEGE",
+    "place": "KAMAREDDY",
+    "district": "KAMAREDDY",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 28,
+    "code": "NZBD17",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "NIZAMABAD",
+    "district": "NIZAMABAD",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 29,
+    "code": "VKBD24",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "VIKARABAD",
+    "district": "VIKARABAD",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 30,
+    "code": "GDCB39",
+    "name": "GOVERNMENT DEGREE COLLEGE",
+    "place": "BHOOPALPALLI",
+    "district": "JAYASHANKAR BHOOPALPALLI",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 31,
+    "code": "ABVJ36",
+    "name": "A B V GOVERNMENT DEGREE COLLEGE",
+    "place": "JANGAON",
+    "district": "JANGAON",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 32,
+    "code": "GDCM38",
+    "name": "GOVERNMENT DEGREE COLLEGE",
+    "place": "MAHABUBABAD",
+    "district": "MAHABUBABAD",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 33,
+    "code": "KDCH26",
+    "name": "KAKATIYA GOVERNMENT COLLEGE",
+    "place": "HANAMKONDA",
+    "district": "WARANGAL URBAN",
+    "days": 4,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 04-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 34,
+    "code": "KUSB18",
+    "name": "UNIVERSITY ARTS & SCIENCE COLLEGE, SUBEDARI",
+    "place": "HANAMKONDA",
+    "district": "HANAMKONDA",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 35,
+    "code": "KUWL20",
+    "name": "DIRECTORATE OF ADMISSIONS, KAKATIYA UNIVERSITY CAMPUS",
+    "place": "WARANGAL",
+    "district": "WARANGAL",
+    "days": 5,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 05-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  },
+  {
+    "sno": 36,
+    "code": "WRGL19",
+    "name": "GOVERNMENT POLYTECHNIC",
+    "place": "WARANGAL",
+    "district": "WARANGAL",
+    "days": 8,
+    "special_categories": [
+      {
+        "dates": "01-07-2025 to 08-07-2025",
+        "categories": "OC/EWS/BC/SC/ST/MINORITIES"
+      }
+    ],
+    "slots": [
+      "09:00 AM to 09:30 AM",
+      "09:30 AM to 10:00 AM",
+      "10:00 AM to 10:30 AM",
+      "10:30 AM to 11:00 AM",
+      "11:00 AM to 11:30 AM",
+      "11:30 AM to 12:00 Noon",
+      "12:00 Noon to 12:30 PM",
+      "12:30 PM to 01:00 PM",
+      "02:00 PM to 02:30 PM",
+      "02:30 PM to 03:00 PM",
+      "03:00 PM to 03:30 PM",
+      "03:30 PM to 04:00 PM",
+      "04:00 PM to 04:30 PM",
+      "04:30 PM to 05:00 PM",
+      "05:00 PM to 05:30 PM",
+      "05:30 PM to 06:00 PM"
+    ],
+    "activities": "Certificate Verification & Biometrics, Aadhaar authentication, Document check",
+    "instructions": [
+      "Verify the HLC, date, and slot from your official Slot Booking receipt before attending.",
+      "Aadhaar authentication/fingerprint scanning is mandatory for all students at the HLC.",
+      "Bring 1 original set of all certificates and 2 sets of clear photocopies (xerox).",
+      "Special Categories (NCC, CAP, PHC, Sports, Anglo-Indian) must attend only at designated HLCs (e.g. Masab Tank or JNTU Kukatpally)."
+    ]
+  }
+]
