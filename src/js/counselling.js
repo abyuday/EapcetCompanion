@@ -1201,8 +1201,7 @@ function toggleBranchColleges(btn, branchCode) {
                             <th class="pb-1.5 pl-2">College</th>
                             <th class="pb-1.5 text-center">Phase 1</th>
                             <th class="pb-1.5 text-center">Phase 2</th>
-                            <th class="pb-1.5 text-center">Final</th>
-                            <th class="pb-1.5 pr-2 text-right">Fee/Yr</th>
+                            <th class="pb-1.5 text-center">Final Phase</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100/60">
@@ -1218,7 +1217,6 @@ function toggleBranchColleges(btn, branchCode) {
                     <td class="py-2 text-center font-semibold text-slate-700">${col.p1 ? col.p1.toLocaleString() : '-'}</td>
                     <td class="py-2 text-center font-semibold text-slate-700">${col.p2 ? col.p2.toLocaleString() : '-'}</td>
                     <td class="py-2 text-center font-semibold text-slate-700">${col.final ? col.final.toLocaleString() : '-'}</td>
-                    <td class="py-2 pr-2 text-right font-bold text-slate-500">${col.fee}</td>
                 </tr>
             `;
         });
