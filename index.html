@@ -97,6 +97,57 @@
         <p class="text-sm font-medium" id="toast-message">Action processed successfully!</p>
     </div>
 
+    <!-- Platform Update Announcement Popup -->
+    <div id="platform-update-popup" class="fixed inset-0 z-[120] hidden items-center justify-center p-4 sm:p-6">
+        <div class="absolute inset-0 bg-slate-950/45 backdrop-blur-sm"></div>
+        <div id="platform-update-popup-card" class="relative w-full max-w-3xl rounded-[2rem] border border-white/50 bg-white/85 backdrop-blur-xl shadow-2xl p-5 sm:p-7 md:p-8 scale-95 opacity-0 transition-all duration-300">
+            <div class="space-y-5">
+                <div class="space-y-2">
+                    <p class="text-[10px] uppercase tracking-[0.2em] font-black text-indigo-500">Major Platform Update</p>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-800">🎯 Smarter Preference Recommendations</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">
+                        Preference List generation is now more accurate based on:
+                    </p>
+                    <ul class="text-xs sm:text-sm text-slate-700 font-semibold space-y-1.5 list-disc pl-5">
+                        <li>selected districts</li>
+                        <li>preferred branches</li>
+                        <li>category</li>
+                        <li>SAFE &amp; MODERATE counselling logic</li>
+                    </ul>
+                    <p class="text-xs sm:text-sm text-emerald-700 font-bold leading-relaxed bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">
+                        Only colleges from your selected districts will now appear in recommendations.
+                    </p>
+                </div>
+
+                <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
+                <div class="space-y-2">
+                    <h4 class="text-lg sm:text-xl font-black text-slate-800">📘 Updated Counselling Guide</h4>
+                    <p class="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">
+                        The TG EAPCET Counselling Guide has been upgraded with:
+                    </p>
+                    <ul class="text-xs sm:text-sm text-slate-700 font-semibold space-y-1.5 list-disc pl-5">
+                        <li>interactive step-by-step guidance</li>
+                        <li>slot booking workflow</li>
+                        <li>certificate verification flow</li>
+                        <li>registration &amp; login process</li>
+                        <li>web options walkthrough</li>
+                        <li>allotment &amp; self reporting guidance</li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button onclick="handlePopupExploreUpdates()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-black shadow-lg transition-all">
+                        Explore Updates
+                    </button>
+                    <button onclick="closePlatformUpdatePopup()" class="flex-1 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-black transition-all">
+                        Got It
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= VIEW 1: HOMEPAGE VIEW ================= -->
     <main id="home-view" class="view-section pt-10">
         <!-- Intro Hero Section -->
@@ -537,7 +588,7 @@
                     <div class="space-y-5 overflow-y-auto max-h-[460px] lg:max-h-[calc(100vh-270px)] pr-2.5 scrollbar-premium">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">EAPCET Rank</label>
-                            <input type="number" id="student-rank" placeholder="e.g. 12000" value="8500"
+                            <input type="number" id="student-rank" placeholder="e.g. 12000" value="6917"
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm text-slate-700 font-semibold transition-colors hover:bg-white">
                         </div>
 
@@ -962,403 +1013,811 @@
                 </div>
             </div>
 
-            <!-- Screen 2: Login Screen -->
-            <div id="guide-screen-2" class="hidden space-y-8 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">1. Login</span>
-                    <span>2. Info</span>
-                    <span>3. Payment</span>
-                    <span>4. Verify</span>
-                    <span>5. Slot Booking</span>
-                    <span>6. Web Options</span>
-                </div>
-
-                <div class="max-w-md mx-auto space-y-6 bg-slate-50/50 border border-slate-200/40 p-6 rounded-3xl shadow-inner">
-                    <h3 class="text-center font-bold text-slate-800 text-lg">Candidate Portal Login</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">TGEAPCET Hall Ticket Number</label>
-                            <input type="text" id="sim-hall-ticket" placeholder="e.g. 240508543" value="240508543"
-                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">TGEAPCET Registration Number</label>
-                            <input type="text" id="sim-reg-number" placeholder="e.g. 9543210678" value="9543210678"
-                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Date of Birth</label>
-                            <input type="date" id="sim-dob" value="2006-08-15"
-                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Captcha Simulation</label>
-                            <div class="flex items-center gap-3">
-                                <div class="bg-indigo-900 text-white font-mono font-bold tracking-widest text-sm px-4 py-2.5 rounded-xl select-none italic line-through shadow-inner">
-                                    A 9 B 8 C
-                                </div>
-                                <input type="text" id="sim-captcha" placeholder="Enter captcha" value="A9B8C"
-                                    class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-2">
-                        <button onclick="handleSimLogin()" id="sim-login-btn"
-                            class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all">
-                            <span>Pay Fee Online</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 3: Basic Information Form -->
-            <div id="guide-screen-3" class="hidden space-y-6 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-slate-400">1. Login</span>
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">2. Info</span>
-                    <span>3. Payment</span>
-                    <span>4. Verify</span>
-                    <span>5. Slot Booking</span>
-                    <span>6. Web Options</span>
-                </div>
-
-                <div class="bg-slate-50/50 border border-slate-200/40 p-6 rounded-3xl space-y-6">
-                    <h3 class="font-bold text-slate-800 text-lg border-b border-slate-200/60 pb-3">Candidate Information Workspace</h3>
-                    
-                    <!-- Candidate Details -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs text-left">
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Candidate Name</span>
-                            <span class="font-bold text-slate-700 text-sm" id="sim-info-name">GANDLA SAI PRANAV</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">EAPCET Rank</span>
-                            <span class="font-bold text-slate-700 text-sm" id="sim-info-rank">8500</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Category</span>
-                            <span class="font-bold text-slate-700 text-sm" id="sim-info-category">EWS</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Gender</span>
-                            <span class="font-bold text-slate-700 text-sm">Male</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Local Area</span>
-                            <span class="font-bold text-slate-700 text-sm">OU (Osmania University)</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Mobile Number</span>
-                            <span class="font-bold text-slate-700 text-sm">98******45</span>
-                        </div>
-                    </div>
-
-                    <!-- Status Chips -->
-                    <div class="pt-4 border-t border-slate-200/40 text-left">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Special Categories Status</span>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-xl font-bold text-[10px] flex items-center gap-1.5">
-                                NCC: <strong class="text-slate-600">Not Verified Yet</strong>
-                            </span>
-                            <span class="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-xl font-bold text-[10px] flex items-center gap-1.5">
-                                SPORTS: <strong class="text-slate-600">Not Verified Yet</strong>
-                            </span>
-                            <span class="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-xl font-bold text-[10px] flex items-center gap-1.5">
-                                CAP: <strong class="text-slate-600">Not Verified Yet</strong>
-                            </span>
-                            <span class="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-xl font-bold text-[10px] flex items-center gap-1.5">
-                                PH: <strong class="text-slate-600">Not Verified Yet</strong>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Certificate details section -->
-                    <div class="pt-4 border-t border-slate-200/40 space-y-4 text-left">
-                        <h4 class="font-bold text-slate-800 text-sm">Certificate Details Section</h4>
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Caste Certificate Number</label>
-                                <input type="text" id="sim-caste-no" placeholder="e.g. CND012345" value="BCG240598765"
-                                    class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                                <span class="text-[9px] text-slate-400 mt-1 block">MeeSeva Caste Certificate ID</span>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Income Certificate Number</label>
-                                <input type="text" id="sim-income-no" placeholder="e.g. IC0123456" value="INC240837482"
-                                    class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                                <span class="text-[9px] text-slate-400 mt-1 block">MeeSeva Income Certificate ID</span>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">EWS Certificate Number</label>
-                                <input type="text" id="sim-ews-no" placeholder="e.g. EWS012345" value="EWS240982736"
-                                    class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                                <span class="text-[9px] text-slate-400 mt-1 block">MeeSeva EWS Certificate ID</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Warning Alert Card -->
-                    <div class="bg-amber-50 border border-amber-200/60 p-4 rounded-2xl flex items-start gap-3 text-left">
-                        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
-                        <p class="text-xs text-amber-800 leading-relaxed font-semibold">
-                            Important Alert: OTPs and counselling updates will be sent to the registered mobile number.
+            <!-- Screen 2: SECTION 1 - Processing Fee Payment (SPA dual panel) -->
+            <div id="guide-screen-2" class="hidden animate-fade-in w-full max-w-7xl mx-auto space-y-8">
+                
+                <!-- Large Centered Hero -->
+                <div class="bg-gradient-to-br from-indigo-900 to-purple-900 rounded-[2.5rem] p-8 md:p-12 text-center text-white relative overflow-hidden shadow-2xl">
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/30 rounded-full blur-3xl"></div>
+                    <div class="relative z-10 max-w-3xl mx-auto">
+                        <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md text-white text-xs font-black uppercase tracking-widest rounded-full mb-6 border border-white/20 shadow-sm">
+                            Step 1 of 4
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-black mb-4 leading-tight">Processing Fee Payment</h2>
+                        <p class="text-sm md:text-base text-indigo-100 font-semibold mb-8 max-w-2xl mx-auto leading-relaxed">
+                            Complete the official counselling processing fee payment before proceeding to slot booking and certificate verification.
                         </p>
-                    </div>
-                </div>
-
-                <div class="text-center pt-2">
-                    <button onclick="showGuideScreen(4)"
-                        class="px-12 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-full font-bold text-base shadow-lg shadow-purple-200/50 hover:scale-[1.03] active:scale-[0.97] transition-all">
-                        Continue to Payment
-                    </button>
-                </div>
-            </div>
-
-            <!-- Screen 4: Payment Experience -->
-            <div id="guide-screen-4" class="hidden space-y-6 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-slate-400">1. Login</span>
-                    <span class="text-slate-400">2. Info</span>
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">3. Payment</span>
-                    <span>4. Verify</span>
-                    <span>5. Slot Booking</span>
-                    <span>6. Web Options</span>
-                </div>
-
-                <div class="max-w-2xl mx-auto space-y-6 text-center">
-                    <h3 class="font-bold text-slate-800 text-lg">Counselling Processing Fee Payment</h3>
-
-                    <!-- Transaction details -->
-                    <div class="bg-slate-50 border border-slate-200/40 rounded-3xl p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-left max-w-xl mx-auto shadow-inner">
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Hall Ticket</span>
-                            <span class="font-bold text-slate-700">240508543</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Rank</span>
-                            <span class="font-bold text-slate-700" id="sim-pay-rank">8500</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Category</span>
-                            <span class="font-bold text-slate-700" id="sim-pay-category">EWS</span>
-                        </div>
-                        <div>
-                            <span class="block text-slate-400 font-bold uppercase text-[9px]">Fee Amount</span>
-                            <span class="font-bold text-purple-600 text-sm">₹1200.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Payment Options -->
-                    <div class="space-y-3 max-w-xl mx-auto">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase text-left">Select Payment Gateway</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <label class="flex flex-col items-center gap-2 p-4 bg-white border-2 border-purple-600 rounded-2xl cursor-pointer hover:bg-slate-50 transition-all shadow-sm relative">
-                                <input type="radio" name="payment-method" value="T-Wallet" checked class="absolute top-3 right-3 text-purple-600 focus:ring-purple-400">
-                                <span class="text-xl">💳</span>
-                                <span class="text-xs font-bold text-slate-700">T-Wallet</span>
-                            </label>
-                            <label class="flex flex-col items-center gap-2 p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition-all shadow-sm relative">
-                                <input type="radio" name="payment-method" value="BillDesk" class="absolute top-3 right-3 text-purple-600 focus:ring-purple-400">
-                                <span class="text-xl">🏢</span>
-                                <span class="text-xs font-bold text-slate-700">BillDesk Gateway</span>
-                            </label>
-                            <label class="flex flex-col items-center gap-2 p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition-all shadow-sm relative">
-                                <input type="radio" name="payment-method" value="Debit Card" class="absolute top-3 right-3 text-purple-600 focus:ring-purple-400">
-                                <span class="text-xl">💳</span>
-                                <span class="text-xs font-bold text-slate-700">Debit / Credit Card</span>
-                            </label>
-                            <label class="flex flex-col items-center gap-2 p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition-all shadow-sm relative">
-                                <input type="radio" name="payment-method" value="Net Banking" class="absolute top-3 right-3 text-purple-600 focus:ring-purple-400">
-                                <span class="text-xl">🏦</span>
-                                <span class="text-xs font-bold text-slate-700">Net Banking</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Payment Button / Loading Overlay Simulator -->
-                    <div class="pt-4 max-w-xl mx-auto" id="pay-trigger-panel">
-                        <button onclick="handleSimPayment()"
-                            class="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-bold text-sm shadow-md transition-all">
-                            Make Payment
-                        </button>
-                    </div>
-
-                    <!-- Hidden Loader Animation during processing -->
-                    <div id="sim-payment-loader" class="hidden py-8 space-y-4 max-w-xl mx-auto text-center">
-                        <div class="w-12 h-12 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin mx-auto"></div>
-                        <p class="text-xs font-bold text-slate-500 animate-pulse">Contacting Banking Gateway. Please do not close or refresh this tab...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 5: Verify Payment Transaction Status -->
-            <div id="guide-screen-5" class="hidden space-y-6 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-slate-400">1. Login</span>
-                    <span class="text-slate-400">2. Info</span>
-                    <span class="text-slate-400">3. Payment</span>
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">4. Verify</span>
-                    <span>5. Slot Booking</span>
-                    <span>6. Web Options</span>
-                </div>
-
-                <div class="max-w-md mx-auto space-y-6 bg-slate-50/50 border border-slate-200/40 p-6 rounded-3xl text-left">
-                    <h3 class="text-center font-bold text-slate-800 text-lg">Verify Payment Status</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">TGEAPCET Hall Ticket Number</label>
-                            <input type="text" id="sim-verify-ticket" value="240508543" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Registration Number</label>
-                            <input type="text" id="sim-verify-reg" value="9543210678" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Date of Birth</label>
-                            <input type="date" id="sim-verify-dob" value="2006-08-15" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Captcha</label>
-                            <div class="flex items-center gap-3">
-                                <div class="bg-indigo-900 text-white font-mono font-bold tracking-widest text-sm px-4 py-2.5 rounded-xl select-none italic line-through shadow-inner">
-                                    V E R 5 Status
-                                </div>
-                                <input type="text" id="sim-verify-captcha" value="VER5" class="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
+                        
+                        <!-- Workflow Tracker -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs font-bold mb-6">
+                            <div class="flex items-center gap-2 bg-white text-purple-700 px-4 py-2 rounded-xl shadow-md">
+                                <i data-lucide="wallet" class="w-4 h-4"></i> Fee Payment
+                            </div>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-300 hidden sm:block"></i>
+                            <div class="flex items-center gap-2 bg-indigo-800/50 text-indigo-200 border border-indigo-700/50 px-4 py-2 rounded-xl">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i> Verify Payment
+                            </div>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-300 hidden sm:block"></i>
+                            <div class="flex items-center gap-2 bg-indigo-800/50 text-indigo-200 border border-indigo-700/50 px-4 py-2 rounded-xl">
+                                <i data-lucide="calendar" class="w-4 h-4"></i> Slot Booking
                             </div>
                         </div>
-                    </div>
 
-                    <button onclick="handleSimVerify()" id="sim-verify-btn"
-                        class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md mt-2">
-                        Verify Payment Transaction
-                    </button>
-                </div>
-            </div>
-
-            <!-- Screen 6: Final Completion & Transition Screen -->
-            <div id="guide-screen-6" class="hidden space-y-8 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-slate-400">1. Login</span>
-                    <span class="text-slate-400">2. Info</span>
-                    <span class="text-slate-400">3. Payment</span>
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">4. Verify</span>
-                    <span>5. Slot Booking</span>
-                    <span>6. Web Options</span>
-                </div>
-
-                <!-- Glowing success card -->
-                <div class="max-w-md mx-auto bg-gradient-to-tr from-emerald-50 to-teal-50 border border-emerald-200 rounded-[2rem] p-6 md:p-8 text-center shadow-lg relative overflow-hidden group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-[2rem] blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner mb-4">
-                        ✓
-                    </div>
-                    <h3 class="font-bold text-emerald-900 text-xl">Transaction Found Successful & Saved</h3>
-                    <p class="text-emerald-700 text-xs mt-2 leading-relaxed font-semibold">Your TG EAPCET processing registration details are fully logged.</p>
-                </div>
-
-                <!-- Completion Checklist -->
-                <div class="max-w-md mx-auto bg-white border border-slate-200 p-5 rounded-2xl space-y-3 text-left">
-                    <h4 class="font-bold text-slate-800 text-xs border-b border-slate-100 pb-2">Activity Checklist Completed</h4>
-                    <div class="space-y-2 text-xs font-semibold text-slate-600">
-                        <div class="flex items-center gap-2 text-emerald-600">
-                            <span>✓</span> <span>Candidate Details Verified</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-emerald-600">
-                            <span>✓</span> <span>Processing Fee Paid</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-emerald-600">
-                            <span>✓</span> <span>Payment Status Confirmed</span>
+                        <!-- Estimated Time -->
+                        <div class="inline-flex items-center gap-2 text-xs font-medium text-indigo-200 bg-black/20 px-3 py-1.5 rounded-full">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i> Estimated Time: 3–5 Minutes
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center pt-2">
-                    <button onclick="handleSimProceedToSlotBooking()"
-                        class="px-12 py-5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-full font-bold text-base shadow-xl shadow-emerald-200/50 hover:scale-[1.03] active:scale-[0.97] transition-all border-4 border-white">
-                        Proceed to Slot Booking
-                    </button>
-                </div>
-            </div>
-
-            <!-- Screen 7: Slot Booking Simulation -->
-            <div id="guide-screen-7" class="hidden space-y-6 animate-fade-in">
-                <!-- Top Progress Bar -->
-                <div class="flex justify-between items-center text-[9px] md:text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-4">
-                    <span class="text-slate-400">1. Login</span>
-                    <span class="text-slate-400">2. Info</span>
-                    <span class="text-slate-400">3. Payment</span>
-                    <span class="text-slate-400">4. Verify</span>
-                    <span class="text-purple-600 border-b-2 border-purple-600 pb-2">5. Slot Booking</span>
-                    <span class="text-slate-400">6. Web Options</span>
-                </div>
-
-                <div class="max-w-md mx-auto space-y-6 bg-slate-50/50 border border-slate-200/40 p-6 rounded-3xl text-left">
-                    <h3 class="text-center font-bold text-slate-800 text-lg">Select Helpline Centre & Slot</h3>
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
                     
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Select District</label>
-                            <select id="sim-hlc-district" onchange="populateSimHlcs()"
-                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                                <option value="HYDERABAD">HYDERABAD</option>
-                                <option value="MEDCHAL">MEDCHAL</option>
-                                <option value="RANGAREDDY">RANGAREDDY</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Select Helpline Centre (HLC)</label>
-                            <select id="sim-hlc-name"
-                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-                                <option value="JNTUH College of Engineering, Kukatpally">JNTUH College of Engineering, Kukatpally</option>
-                                <option value="Government Polytechnic, Masab Tank">Government Polytechnic, Masab Tank</option>
-                                <option value="QA College of Engineering">QA College of Engineering</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Select Date</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <label class="p-2.5 bg-white border border-slate-200 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold text-slate-600 hover:bg-slate-50">
-                                    <input type="radio" name="sim-slot-date" value="02-07-2025" checked class="text-purple-600 focus:ring-purple-400">
-                                    <span>02-07-2025</span>
-                                </label>
-                                <label class="p-2.5 bg-white border border-slate-200 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold text-slate-600 hover:bg-slate-50">
-                                    <input type="radio" name="sim-slot-date" value="03-07-2025" class="text-purple-600 focus:ring-purple-400">
-                                    <span>03-07-2025</span>
-                                </label>
+                    <!-- Left Panel: Official Guidance & Instructions -->
+                    <div class="xl:col-span-5 space-y-6">
+                        
+                        <!-- Processing Fee Details -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                            <h4 class="text-sm font-black text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <i data-lucide="indian-rupee" class="w-5 h-5 text-emerald-600"></i> Processing Fee Details
+                            </h4>
+                            <div class="grid grid-cols-2 gap-4 mb-5">
+                                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl text-center">
+                                    <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">OC / BC</span>
+                                    <span class="text-xl font-black text-slate-800">Rs. 1200/-</span>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl text-center">
+                                    <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">SC / ST</span>
+                                    <span class="text-xl font-black text-slate-800">Rs. 600/-</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Accepted Payment Methods</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-100">Debit Card</span>
+                                    <span class="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-100">Credit Card</span>
+                                    <span class="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-100">Net Banking</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Select Time Slot</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <label class="p-2.5 bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center cursor-pointer text-[10px] font-bold text-slate-600 hover:bg-slate-50">
-                                    <input type="radio" name="sim-slot-time" value="09:00 AM" checked class="text-purple-600 focus:ring-purple-400 mb-1">
-                                    <span>09:00 AM</span>
-                                </label>
-                                <label class="p-2.5 bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center cursor-pointer text-[10px] font-bold text-slate-600 hover:bg-slate-50">
-                                    <input type="radio" name="sim-slot-time" value="11:30 AM" class="text-purple-600 focus:ring-purple-400 mb-1">
-                                    <span>11:30 AM</span>
-                                </label>
-                                <label class="p-2.5 bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center cursor-pointer text-[10px] font-bold text-slate-600 hover:bg-slate-50">
-                                    <input type="radio" name="sim-slot-time" value="02:00 PM" class="text-purple-600 focus:ring-purple-400 mb-1">
-                                    <span>02:00 PM</span>
-                                </label>
+                        <!-- How To Pay -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                            <h4 class="text-sm font-black text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <i data-lucide="list-ordered" class="w-5 h-5 text-purple-600"></i> How To Pay
+                            </h4>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">1</div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700">Enter Credentials</p>
+                                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Provide Hall Ticket, Registration Number, DOB, and Captcha.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">2</div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700">Click "Pay Fee Online"</p>
+                                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Verify your auto-fetched basic information and certificates.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">3</div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700">Select Payment Method</p>
+                                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Choose T-Wallet, BillDesk, or other preferred gateways.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">4</div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700">Complete & Save Receipt</p>
+                                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Save the transaction receipt for future reference.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Important Instructions & Issues -->
+                        <div class="bg-rose-50/50 border border-rose-100 rounded-3xl p-6 shadow-sm">
+                            <h4 class="text-sm font-black text-slate-800 mb-4 flex items-center gap-2 border-b border-rose-200/50 pb-3">
+                                <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600"></i> Important Instructions
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="bg-white border border-rose-100 p-3.5 rounded-xl flex items-start gap-3 shadow-sm">
+                                    <i data-lucide="info" class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] font-semibold text-slate-700">If payment page does not respond, use <strong>Verify Payment Status</strong> instead of paying again.</p>
+                                </div>
+                                <div class="bg-white border border-rose-100 p-3.5 rounded-xl flex items-start gap-3 shadow-sm">
+                                    <i data-lucide="clock" class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] font-semibold text-slate-700">In case of transaction failure, refund may take up to <strong>2 working days</strong>.</p>
+                                </div>
+                                <div class="bg-white border border-rose-100 p-3.5 rounded-xl flex items-start gap-3 shadow-sm">
+                                    <i data-lucide="headphones" class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] font-semibold text-slate-700">Contact nearest <strong>Help Line Centre (HLC)</strong> for clarification on failures.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="handleSimBookSlot()" id="sim-book-slot-btn"
-                        class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition-all shadow-md">
-                        Confirm Slot Booking
-                    </button>
+                    <!-- Right Panel: Interactive Portal -->
+                    <div class="xl:col-span-7 relative">
+                        
+                        <!-- Interactive Views Container -->
+                        <div class="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-[2.5rem] p-6 sm:p-10 shadow-xl min-h-[600px] relative overflow-hidden">
+                            
+                            <!-- Sub-view: Login -->
+                            <div id="fee-step-login" class="space-y-8 animate-fade-in">
+                                <div class="border-b border-slate-100 pb-5">
+                                    <h3 class="font-black text-slate-800 text-2xl">Candidate Login</h3>
+                                    <p class="text-xs text-slate-500 font-bold mt-1.5 uppercase tracking-wide">Official Processing Fee Portal</p>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="grid sm:grid-cols-2 gap-5">
+                                        <div>
+                                            <label class="block text-[11px] font-black text-slate-600 mb-2 uppercase tracking-wide">TGEAPCET Hall Ticket Number <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="spa-fee-ticket" placeholder="e.g. 2505XXXX92" value="2505XXXX92" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white transition-all shadow-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-black text-slate-600 mb-2 uppercase tracking-wide">Registration Form Number <span class="text-rose-500">*</span></label>
+                                            <input type="text" id="spa-fee-reg" placeholder="e.g. 22XXXX04" value="22XXXX04" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white transition-all shadow-sm">
+                                        </div>
+                                    </div>
+                                    <div class="grid sm:grid-cols-2 gap-5">
+                                        <div>
+                                            <label class="block text-[11px] font-black text-slate-600 mb-2 uppercase tracking-wide">Date of Birth <span class="text-rose-500">*</span></label>
+                                            <input type="date" id="spa-fee-dob" value="2006-08-15" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white transition-all shadow-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-black text-slate-600 mb-2 uppercase tracking-wide">Captcha Simulation <span class="text-rose-500">*</span></label>
+                                            <div class="flex items-center gap-3">
+                                                <div class="bg-slate-800 text-white font-mono font-bold tracking-[0.2em] text-base px-5 py-4 rounded-2xl select-none italic line-through shadow-inner">
+                                                    A9B8C
+                                                </div>
+                                                <input type="text" id="spa-fee-captcha" value="A9B8C" placeholder="Enter Captcha" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white transition-all shadow-sm text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <button onclick="advanceFeeStep(2)" class="sm:col-span-3 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-sm font-black transition-all shadow-lg hover:shadow-indigo-500/30">
+                                        Pay Fee Online
+                                    </button>
+                                    <button onclick="handleNavNavigate(5)" class="py-3.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-2xl text-[11px] font-black transition-all shadow-sm flex items-center justify-center gap-2">
+                                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Online Payment Status
+                                    </button>
+                                    <button class="py-3.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-2xl text-[11px] font-black transition-all shadow-sm flex items-center justify-center gap-2 sm:col-span-2">
+                                        <i data-lucide="printer" class="w-4 h-4"></i> Print Receipt
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Sub-view: Basic Info & Certificates -->
+                            <div id="fee-step-info" class="hidden space-y-8 animate-fade-in">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                                    <h3 class="font-black text-slate-800 text-xl">Candidate Details</h3>
+                                    <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full uppercase">Auto-Fetched</span>
+                                </div>
+
+                                <!-- Extended Auto Fetched Details Grid -->
+                                <div class="bg-slate-50/50 border border-slate-200 rounded-3xl p-5 shadow-inner">
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Candidate Name</span>
+                                            <span class="font-black text-slate-800 text-sm">Student Demo</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Father Name</span>
+                                            <span class="font-black text-slate-800 text-sm">P. Demo</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Hall Ticket No.</span>
+                                            <span class="font-black text-slate-800 text-sm">2505XXXX92</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">TGEAPCET Rank</span>
+                                            <span class="font-black text-indigo-600 text-sm">6917</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Gender</span>
+                                            <span class="font-black text-slate-800 text-sm">Male</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Local Area</span>
+                                            <span class="font-black text-slate-800 text-sm">OU</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Caste Category</span>
+                                            <span class="font-black text-slate-800 text-sm">EWS</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Nationality</span>
+                                            <span class="font-black text-slate-800 text-sm">Indian</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Minority Status</span>
+                                            <span class="font-black text-slate-800 text-sm">Non-Minority</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-slate-400 font-bold uppercase text-[9px] mb-1">Qualifying Marks</span>
+                                            <span class="font-black text-slate-800 text-sm">92.5%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Special Category Status -->
+                                    <div class="mt-6 pt-5 border-t border-slate-200">
+                                        <span class="block text-slate-400 font-bold uppercase text-[9px] mb-3">Special Category Status</span>
+                                        <div class="flex flex-wrap gap-3">
+                                            <div class="bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-sm flex items-center justify-between w-[120px]">
+                                                <span class="text-[10px] font-black text-slate-600">NCC</span>
+                                                <span class="bg-slate-100 text-slate-500 text-[9px] font-bold px-2 py-0.5 rounded">No</span>
+                                            </div>
+                                            <div class="bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-sm flex items-center justify-between w-[120px]">
+                                                <span class="text-[10px] font-black text-slate-600">Sports</span>
+                                                <span class="bg-slate-100 text-slate-500 text-[9px] font-bold px-2 py-0.5 rounded">No</span>
+                                            </div>
+                                            <div class="bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-sm flex items-center justify-between w-[120px]">
+                                                <span class="text-[10px] font-black text-slate-600">CAP</span>
+                                                <span class="bg-slate-100 text-slate-500 text-[9px] font-bold px-2 py-0.5 rounded">No</span>
+                                            </div>
+                                            <div class="bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-sm flex items-center justify-between w-[120px]">
+                                                <span class="text-[10px] font-black text-slate-600">PH</span>
+                                                <span class="bg-slate-100 text-slate-500 text-[9px] font-bold px-2 py-0.5 rounded">No</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- User Input Section -->
+                                <div class="space-y-5">
+                                    <h4 class="text-sm font-black text-slate-800 border-b border-slate-100 pb-2">Provide Certificate & Contact Details</h4>
+                                    <div class="grid md:grid-cols-2 gap-5">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Caste Certificate Application No.</label>
+                                            <input type="text" value="CSTXXXXXXX65" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Income Certificate Application No.</label>
+                                            <input type="text" value="INCXXXX782" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                            <span class="text-[9px] text-slate-400 font-medium mt-1 block">Required for fee reimbursement eligibility.</span>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">EWS Certificate Application No.</label>
+                                            <input type="text" value="EWSXXXX291" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Aadhaar Number <span class="text-rose-500">*</span></label>
+                                            <input type="text" value="XXXX-XXXX-1234" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Mobile Number <span class="text-rose-500">*</span></label>
+                                            <input type="text" value="98XXXXXX63" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                            <span class="text-[9px] text-slate-400 font-medium mt-1 block">Login ID and OTP updates will be sent to this number.</span>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Email ID <span class="text-rose-500">*</span></label>
+                                            <input type="email" value="ab***@gmail.com" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-400 focus:bg-white shadow-sm">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Candidate Declaration -->
+                                <div class="space-y-4 pt-4">
+                                    <h4 class="text-sm font-black text-slate-800">Candidate Declaration</h4>
+                                    <div class="h-32 overflow-y-auto bg-slate-50 border border-slate-200 rounded-2xl p-4 text-[10px] sm:text-xs text-slate-600 font-medium leading-relaxed shadow-inner">
+                                        <p class="mb-2">1. I hereby declare that all the information furnished by me in this application is true and correct to the best of my knowledge and belief.</p>
+                                        <p class="mb-2">2. I understand that I must submit all original documents during certificate verification. Any discrepancy found later will lead to the cancellation of my seat allotment.</p>
+                                        <p>3. I acknowledge the counselling rules and agree to abide by the decisions made by the Convener, TG EAPCET Admissions.</p>
+                                    </div>
+                                    <label class="flex items-start gap-3 p-4 bg-white border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-indigo-200 transition-all shadow-sm">
+                                        <input type="checkbox" checked class="mt-0.5 text-indigo-600 rounded focus:ring-indigo-500 w-4 h-4">
+                                        <span class="text-xs text-slate-700 font-bold">I understand and agree to the counselling guidelines and declaration above.</span>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center gap-4 pt-4 border-t border-slate-100">
+                                    <button onclick="advanceFeeStep(1)" class="px-6 py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-2xl text-sm font-black transition-all shadow-sm">Back</button>
+                                    <button onclick="advanceFeeStep(3)" class="flex-grow py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-sm font-black transition-all shadow-lg hover:shadow-indigo-500/30 flex justify-center items-center gap-2">
+                                        Proceed to Payment <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Sub-view: Gateway & Payment -->
+                            <div id="fee-step-gateway" class="hidden space-y-8 animate-fade-in">
+                                <div class="text-center pb-6 border-b border-slate-100">
+                                    <h3 class="font-black text-slate-800 text-2xl">Secure Gateway</h3>
+                                    <p class="text-xs text-slate-500 font-bold mt-1.5 uppercase tracking-wide">Select payment method to complete transaction</p>
+                                </div>
+
+                                <!-- Amount Banner -->
+                                <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-[2rem] p-8 text-center text-white relative overflow-hidden shadow-xl">
+                                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                                    <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
+                                    <span class="block text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-2 relative z-10">Total Amount Payable</span>
+                                    <span class="text-4xl font-black tracking-tight relative z-10">₹1,200.00</span>
+                                </div>
+
+                                <!-- Payment Options -->
+                                <div class="space-y-4">
+                                    <label class="block text-[11px] font-black text-slate-600 uppercase tracking-wide">Select Gateway</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        <label class="flex flex-col items-center justify-center gap-3 p-5 bg-white border-2 border-indigo-600 rounded-2xl cursor-pointer shadow-sm relative transition-all">
+                                            <input type="radio" name="spa-gateway" checked class="absolute top-3 right-3 text-indigo-600 focus:ring-indigo-400 w-4 h-4">
+                                            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="building-2" class="w-6 h-6"></i></div>
+                                            <span class="text-xs font-black text-slate-800">BillDesk</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 shadow-sm relative transition-all">
+                                            <input type="radio" name="spa-gateway" class="absolute top-3 right-3 text-indigo-600 focus:ring-indigo-400 w-4 h-4">
+                                            <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="smartphone" class="w-6 h-6"></i></div>
+                                            <span class="text-xs font-black text-slate-800">T-Wallet</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 shadow-sm relative transition-all">
+                                            <input type="radio" name="spa-gateway" class="absolute top-3 right-3 text-indigo-600 focus:ring-indigo-400 w-4 h-4">
+                                            <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="credit-card" class="w-6 h-6"></i></div>
+                                            <span class="text-xs font-black text-slate-800">Debit Card</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 shadow-sm relative transition-all">
+                                            <input type="radio" name="spa-gateway" class="absolute top-3 right-3 text-indigo-600 focus:ring-indigo-400 w-4 h-4">
+                                            <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="credit-card" class="w-6 h-6"></i></div>
+                                            <span class="text-xs font-black text-slate-800">Credit Card</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 shadow-sm relative transition-all md:col-span-2">
+                                            <input type="radio" name="spa-gateway" class="absolute top-3 right-3 text-indigo-600 focus:ring-indigo-400 w-4 h-4">
+                                            <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="landmark" class="w-6 h-6"></i></div>
+                                            <span class="text-xs font-black text-slate-800">Net Banking</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-4 pt-4 border-t border-slate-100" id="fee-payment-actions">
+                                    <button onclick="advanceFeeStep(2)" class="px-6 py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-2xl text-sm font-black transition-all shadow-sm">Back</button>
+                                    <button onclick="simulateFeePaymentProcess()" class="flex-grow py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-black transition-all shadow-lg hover:shadow-emerald-500/30 flex items-center justify-center gap-2">
+                                        <i data-lucide="lock" class="w-4 h-4"></i> Secure Pay ₹1,200
+                                    </button>
+                                </div>
+
+                                <!-- Loader Overlay -->
+                                <div id="fee-payment-loader-overlay" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md z-10 flex flex-col items-center justify-center space-y-6 animate-fade-in rounded-[2.5rem]">
+                                    <div class="relative w-24 h-24">
+                                        <div class="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+                                        <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+                                        <i data-lucide="shield" class="absolute inset-0 m-auto w-8 h-8 text-indigo-500"></i>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="text-xl font-black text-slate-800">Processing Payment...</h4>
+                                        <p class="text-sm font-bold text-slate-500 mt-2 animate-pulse max-w-sm mx-auto">Please do not press back or refresh the page while we contact the gateway securely.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sub-view: Payment Success -->
+                            <div id="fee-step-success" class="hidden text-center space-y-8 animate-fade-in py-8">
+                                <div class="relative w-28 h-28 mx-auto">
+                                    <div class="absolute inset-0 bg-emerald-400 rounded-full animate-ping opacity-20"></div>
+                                    <div class="relative w-full h-full bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-inner">
+                                        <i data-lucide="check" class="w-12 h-12"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-3xl font-black text-slate-800">Payment Successful!</h3>
+                                    <p class="text-sm font-bold text-slate-500 mt-2">Your processing fee has been securely recorded.</p>
+                                </div>
+                                
+                                <div class="bg-white border-2 border-emerald-100 rounded-3xl p-6 text-left max-w-sm mx-auto shadow-xl shadow-emerald-50 relative overflow-hidden">
+                                    <div class="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
+                                    <div class="flex justify-between py-3 border-b border-slate-50">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase">Transaction ID</span>
+                                        <span class="text-sm font-black text-slate-800">TXNXXXX4587</span>
+                                    </div>
+                                    <div class="flex justify-between py-3 border-b border-slate-50">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase">Date & Time</span>
+                                        <span class="text-sm font-black text-slate-800">21 May 2026, 10:45 AM</span>
+                                    </div>
+                                    <div class="flex justify-between py-3 border-b border-slate-50">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase">Payment Method</span>
+                                        <span class="text-sm font-black text-slate-800">BillDesk</span>
+                                    </div>
+                                    <div class="flex justify-between py-3 mt-1">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase mt-1">Amount</span>
+                                        <span class="text-xl font-black text-emerald-600">₹1,200.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto pt-4">
+                                    <button class="flex-1 py-4 bg-white border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded-2xl text-sm font-black transition-all shadow-sm flex items-center justify-center gap-2">
+                                        <i data-lucide="download" class="w-4 h-4"></i> Download Receipt
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Post Payment Guidance (Appears on success) -->
+                        <div id="fee-post-guidance" class="hidden mt-8 bg-indigo-50 border border-indigo-100 rounded-3xl p-8 text-center animate-fade-in">
+                            <h4 class="text-lg font-black text-slate-800 mb-6">What Happens Next?</h4>
+                            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-8 text-xs font-bold">
+                                <div class="text-emerald-700 flex flex-col items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-6 h-6"></i> Paid
+                                </div>
+                                <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-300 hidden sm:block"></i>
+                                <div class="text-indigo-700 flex flex-col items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm border border-indigo-100">
+                                    <i data-lucide="search" class="w-5 h-5"></i> Verify
+                                </div>
+                                <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-300 hidden sm:block"></i>
+                                <div class="text-slate-400 flex flex-col items-center gap-2">
+                                    <i data-lucide="calendar" class="w-5 h-5"></i> Slot Booking
+                                </div>
+                            </div>
+                            <button onclick="handleNavNavigate(5)" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black shadow-lg hover:shadow-indigo-500/30 transition-all group">
+                                Proceed to Verify Payment Status <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Screen 5: SECTION 2 - Verify Payment Status (SPA dual panel) -->
+            <div id="guide-screen-5" class="hidden animate-fade-in w-full max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left Panel: Guidance -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+                            <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-black uppercase rounded-lg mb-4 flex items-center gap-2 w-fit">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i> Step 1 Done
+                            </span>
+                            <h3 class="text-2xl font-black text-slate-900 leading-tight mb-2">Verify Payment Status</h3>
+                            <p class="text-xs font-semibold text-slate-500 mb-4">Confirm that your counselling processing fee payment was successfully received before slot booking.</p>
+                            
+                            <!-- Workflow progress tracker -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
+                                <div class="flex items-center gap-3 opacity-60">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                    <span class="text-xs font-bold text-slate-600">Processing Fee Payment</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="arrow-right-circle" class="w-4 h-4 text-indigo-600"></i>
+                                    <span class="text-xs font-bold text-indigo-700">Verify Payment Status</span>
+                                </div>
+                                <div class="flex items-center gap-3 opacity-40">
+                                    <i data-lucide="circle" class="w-4 h-4 text-slate-400"></i>
+                                    <span class="text-xs font-bold text-slate-500">Slot Booking</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Help Desk Support -->
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-3xl flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white shadow-sm text-slate-600 rounded-xl flex items-center justify-center flex-shrink-0 border border-slate-100">
+                                <i data-lucide="headphones" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-1">Help Desk Support</h4>
+                                <p class="text-[11px] font-semibold text-slate-500 mb-2">If your amount was debited but status failed, do not pay again immediately.</p>
+                                <div class="text-[10px] font-black text-slate-700 bg-white px-2 py-1 rounded inline-block border border-slate-100">Phone: TBA / Official Notification</div>
+                            </div>
+                        </div>
+
+                        <!-- Common Issues Accordion -->
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-sm">
+                            <h4 class="text-xs font-bold text-slate-800 mb-3">Troubleshooting</h4>
+                            <div class="space-y-2">
+                                <details class="group bg-slate-50 border border-slate-100 rounded-xl">
+                                    <summary class="text-[11px] font-bold text-slate-700 cursor-pointer p-3 list-none flex justify-between items-center hover:bg-slate-100 transition-all rounded-xl">
+                                        Amount debited but status not updated
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                                    </summary>
+                                    <div class="p-3 pt-0 text-[10px] text-slate-500 font-medium mt-1">
+                                        Wait a few minutes and retry verification. Sometimes bank delays take up to 2 hours.
+                                    </div>
+                                </details>
+                                <details class="group bg-slate-50 border border-slate-100 rounded-xl">
+                                    <summary class="text-[11px] font-bold text-slate-700 cursor-pointer p-3 list-none flex justify-between items-center hover:bg-slate-100 transition-all rounded-xl">
+                                        Incorrect Hall Ticket Number
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                                    </summary>
+                                    <div class="p-3 pt-0 text-[10px] text-slate-500 font-medium mt-1">
+                                        Ensure Hall Ticket and Registration Number are entered exactly as printed on the official document.
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Interactive Verification Portal -->
+                    <div class="lg:col-span-8">
+                        <div class="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-[2rem] p-6 sm:p-10 shadow-xl min-h-[500px] relative flex flex-col justify-center">
+                            
+                            <!-- Default Verification Form -->
+                            <div id="verify-form-container" class="space-y-6 max-w-md mx-auto w-full animate-fade-in">
+                                <div class="text-center mb-6">
+                                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i data-lucide="search" class="w-7 h-7"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-xl">Lookup Transaction</h3>
+                                    <p class="text-xs text-slate-500 font-medium mt-2">Enter details to verify payment status.</p>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">TGEAPCET Hall Ticket Number</label>
+                                        <input type="text" id="spa-verify-ticket" value="2505XXXX92" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:bg-white transition-all shadow-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Registration Number</label>
+                                        <input type="text" id="spa-verify-reg" value="22XXXX04" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:bg-white transition-all shadow-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Date of Birth</label>
+                                        <input type="date" id="spa-verify-dob" value="2006-08-15" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:bg-white transition-all shadow-sm">
+                                    </div>
+                                    <button onclick="simulateVerificationProcess()" class="w-full py-4 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg hover:shadow-indigo-300 flex items-center justify-center gap-2">
+                                        Verify Payment Transaction
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Loader State -->
+                            <div id="verify-loader-container" class="hidden flex-col items-center justify-center space-y-5 animate-fade-in text-center h-full absolute inset-0 bg-white/95 rounded-[2rem] z-10">
+                                <div class="relative w-20 h-20">
+                                    <div class="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+                                    <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+                                    <i data-lucide="shield" class="absolute inset-0 m-auto w-6 h-6 text-indigo-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-slate-800">Verifying Security Token...</h4>
+                                    <p class="text-xs font-semibold text-slate-500 mt-2">Checking official bank records. Please wait.</p>
+                                </div>
+                            </div>
+
+                            <!-- Results Container (Populated via JS) -->
+                            <div id="verify-result-container" class="hidden animate-fade-in w-full h-full flex flex-col items-center justify-center pt-8">
+                                <!-- JS inserts Result Card here -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- Screen 7: Slot Booking and Certificate Verification -->
+            <div id="guide-screen-7" class="hidden space-y-7 animate-fade-in">
+                <div class="bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 rounded-[2.25rem] p-6 md:p-10 text-white shadow-2xl relative overflow-hidden">
+                    <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-white/10 blur-2xl"></div>
+                    <div class="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-indigo-300/20 blur-2xl"></div>
+                    <div class="relative z-10 space-y-5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/30 bg-white/10 text-[11px] font-black tracking-wider uppercase">Step 2 of 4</div>
+                        <h2 class="text-2xl md:text-4xl font-black leading-tight">Step 2 - Slot Booking and Certificate Verification</h2>
+                        <p class="text-sm md:text-base text-indigo-100 max-w-3xl font-semibold">Select your Help Line Centre (HLC), preferred date, and slot timing for certificate verification.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2">
+                            <div class="bg-white/15 border border-white/25 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-wider text-indigo-100 font-bold">Progress</p>
+                                <p class="text-sm font-black mt-1">Processing Fee Completed</p>
+                            </div>
+                            <div class="bg-white/15 border border-white/25 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-wider text-indigo-100 font-bold">Current Step</p>
+                                <p class="text-sm font-black mt-1">Slot Booking</p>
+                            </div>
+                            <div class="bg-white/15 border border-white/25 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-wider text-indigo-100 font-bold">Estimated Time</p>
+                                <p class="text-sm font-black mt-1">6-8 minutes</p>
+                            </div>
+                            <div class="bg-white/15 border border-white/25 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-wider text-indigo-100 font-bold">Next</p>
+                                <p class="text-sm font-black mt-1">Certificate Verification</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 text-[11px] font-black pt-1">
+                            <span class="px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/30 text-emerald-100">Done: Processing Fee</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/30 text-emerald-100">Done: Verify Payment</span>
+                            <span class="px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-100">Now: Slot Booking</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-indigo-100">Upcoming: Certificate Verification</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm">
+                        <p class="text-[10px] uppercase tracking-wider font-black text-blue-600">Before Slot Booking</p>
+                        <p class="text-xs text-slate-700 mt-2 font-semibold leading-relaxed">Processing Fee payment must be completed before slot booking. Keep hall ticket, registration number, and date of birth ready.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm">
+                        <p class="text-[10px] uppercase tracking-wider font-black text-indigo-600">HLC Selection Guidance</p>
+                        <p class="text-xs text-slate-700 mt-2 font-semibold leading-relaxed">Candidate must attend only the selected Help Line Centre. Choose the district and center that is practical for in-person reporting.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm">
+                        <p class="text-[10px] uppercase tracking-wider font-black text-purple-600">Timing Instructions</p>
+                        <p class="text-xs text-slate-700 mt-2 font-semibold leading-relaxed">Candidate should report 10 minutes before slot timing. Keep originals and Xerox sets ready before travel.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm">
+                        <p class="text-[10px] uppercase tracking-wider font-black text-amber-600">Popup and Receipt</p>
+                        <p class="text-xs text-slate-700 mt-2 font-semibold leading-relaxed">After choosing center, date, and time, confirm booking and print the receipt. Save the serial number for verification day.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-lg">
+                    <h3 class="text-lg md:text-xl font-black text-slate-800">Interactive Candidate Login</h3>
+                    <p class="text-xs text-slate-500 font-semibold mt-1">Enter details to fetch available HLC slots.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-5">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">Hall Ticket Number</label>
+                            <input id="sim-slot-login-ticket" type="text" value="2505XXXX92" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">Registration Number</label>
+                            <input id="sim-slot-login-reg" type="text" value="22XXXX04" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">Date of Birth</label>
+                            <input id="sim-slot-login-dob" type="date" value="2006-08-15" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">Captcha Simulation (Type 8246)</label>
+                            <input id="sim-slot-login-captcha" type="text" placeholder="Enter captcha" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-5">
+                        <button onclick="handleSimSlotLoginAndShow()" class="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black shadow-md transition-all">Show Available Slots</button>
+                        <button onclick="printSimSlotReceipt()" class="px-5 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-black transition-all">Print Slot Booking Receipt</button>
+                    </div>
+                </div>
+
+                <div id="slot-booking-category-panel" class="hidden bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-sm space-y-4">
+                    <div>
+                        <h4 class="text-base md:text-lg font-black text-slate-800">Category Selection</h4>
+                        <p class="text-xs font-semibold text-slate-500 mt-1">ALL is for OC/BC/SC/ST candidates without special category reservation.</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2.5">
+                        <button data-slot-category="ALL" onclick="setSimSlotCategory('ALL')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-black transition-all">ALL</button>
+                        <button data-slot-category="NCC" onclick="setSimSlotCategory('NCC')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all">NCC</button>
+                        <button data-slot-category="SPORTS" onclick="setSimSlotCategory('SPORTS')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all">SPORTS</button>
+                        <button data-slot-category="CAP" onclick="setSimSlotCategory('CAP')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all">CAP</button>
+                        <button data-slot-category="PH" onclick="setSimSlotCategory('PH')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all">PH</button>
+                        <button data-slot-category="ANGLO-INDIAN" onclick="setSimSlotCategory('ANGLO-INDIAN')" class="slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all">ANGLO-INDIAN</button>
+                    </div>
+                    <p id="slot-category-desc" class="text-xs text-slate-600 font-semibold bg-slate-50 border border-slate-200 rounded-xl p-3">General category candidates can continue with ALL category slots across available HLCs.</p>
+                </div>
+
+                <div id="slot-booking-workspace" class="hidden grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div class="bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-sm space-y-5 min-w-0">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="flex-1">
+                                <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">Search HLC</label>
+                                <input id="slot-hlc-search" oninput="renderSimSlotHlcList()" type="text" placeholder="Search by center, city, district..." class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                            </div>
+                            <div class="sm:w-52">
+                                <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500 mb-1.5">District</label>
+                                <select id="slot-hlc-district-filter" onchange="renderSimSlotHlcList()" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition-all">
+                                    <option value="ALL">All Districts</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="slot-hlc-results" class="max-h-[420px] overflow-y-auto space-y-3 pr-1"></div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-sm space-y-5 min-w-0">
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                            <h5 class="text-sm font-black text-slate-800">Selected HLC Details</h5>
+                            <p id="slot-selected-hlc-meta" class="text-xs font-semibold text-slate-500 mt-2">Choose an HLC card to view schedule.</p>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="text-sm font-black text-slate-800">Calendar and Date Selection</h5>
+                                <span class="text-[10px] font-black text-slate-500 uppercase">Tap-friendly selection</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 text-[10px] font-bold mb-3">
+                                <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Green: Available</span>
+                                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">Grey: Full</span>
+                                <span class="px-2.5 py-1 rounded-full bg-white text-slate-400 border border-slate-200">Disabled: Unavailable</span>
+                            </div>
+                            <div id="slot-calendar-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+                            <p id="slot-calendar-state" class="text-[11px] text-slate-500 font-semibold mt-2">Select HLC to load available dates.</p>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="text-sm font-black text-slate-800">Time Slot Selection</h5>
+                                <span class="text-[10px] font-black text-slate-500 uppercase">Official slot windows</span>
+                            </div>
+                            <div id="slot-time-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                            <p id="slot-time-state" class="text-[11px] text-slate-500 font-semibold mt-2">Select date to view slot availability.</p>
+                        </div>
+
+                        <button id="sim-slot-review-btn" onclick="handleSimBookSlot()" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs md:text-sm font-black shadow-md transition-all">Review and Confirm Slot Booking</button>
+                    </div>
+                </div>
+
+                <div id="slot-confirm-modal" class="hidden fixed inset-0 z-[110] p-4 md:p-8">
+                    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeSimSlotConfirmation()"></div>
+                    <div class="relative max-w-xl mx-auto mt-8 md:mt-20 bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 md:p-7">
+                        <h4 class="text-lg font-black text-slate-800">Confirm Slot Booking</h4>
+                        <p class="text-xs text-slate-500 font-semibold mt-1">Do you wish to continue with this slot booking?</p>
+                        <div class="mt-5 space-y-2.5 text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                            <div class="flex justify-between gap-3"><span class="text-slate-500 font-bold">Selected HLC</span><span id="slot-confirm-hlc" class="font-black text-slate-800 text-right"></span></div>
+                            <div class="flex justify-between gap-3"><span class="text-slate-500 font-bold">Selected Date</span><span id="slot-confirm-date" class="font-black text-slate-800 text-right"></span></div>
+                            <div class="flex justify-between gap-3"><span class="text-slate-500 font-bold">Selected Time</span><span id="slot-confirm-time" class="font-black text-slate-800 text-right"></span></div>
+                            <div class="flex justify-between gap-3"><span class="text-slate-500 font-bold">Selected Category</span><span id="slot-confirm-category" class="font-black text-slate-800 text-right"></span></div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                            <button onclick="confirmSimSlotBooking()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all">Confirm Slot</button>
+                            <button onclick="closeSimSlotConfirmation()" class="flex-1 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-black transition-all">Change Selection</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="slot-booking-receipt-panel" class="hidden space-y-5">
+                    <div class="bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-lg">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider font-black text-indigo-600">Slot Booking Receipt</p>
+                                <h4 class="text-lg md:text-xl font-black text-slate-800 mt-1">Certificate Verification Appointment Slip</h4>
+                                <p class="text-xs text-slate-500 font-semibold mt-1">Keep this receipt safe and carry it at the HLC.</p>
+                            </div>
+                            <div class="text-left md:text-right">
+                                <p class="text-[10px] uppercase tracking-wider font-black text-slate-400">Serial Number</p>
+                                <p id="slot-receipt-serial" class="text-sm font-black text-slate-800 mt-1">TGSLOT-2026-000001</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-xs">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Candidate Name</span><span id="slot-receipt-name" class="font-black text-slate-800 text-right">Student Demo</span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Father Name</span><span id="slot-receipt-father" class="font-black text-slate-800 text-right"> Demo</span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Hall Ticket Number</span><span id="slot-receipt-ticket" class="font-black text-slate-800 text-right">2505XXXX92</span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Rank</span><span id="slot-receipt-rank" class="font-black text-slate-800 text-right">6917</span></div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">HLC Name</span><span id="slot-receipt-hlc" class="font-black text-slate-800 text-right"></span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">HLC Address</span><span id="slot-receipt-address" class="font-black text-slate-800 text-right"></span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Slot Date</span><span id="slot-receipt-date" class="font-black text-slate-800 text-right"></span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Slot Time</span><span id="slot-receipt-time" class="font-black text-slate-800 text-right"></span></div>
+                                <div class="flex justify-between gap-2"><span class="font-bold text-slate-500">Slot Category</span><span id="slot-receipt-category" class="font-black text-slate-800 text-right"></span></div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 bg-amber-50 border border-amber-200 rounded-2xl p-3">
+                            <p class="text-xs text-amber-800 font-bold leading-relaxed">Candidate should report 10 minutes before slot timing.</p>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 mt-5">
+                            <button onclick="printSimSlotReceipt()" class="sm:w-auto px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black transition-all">Print Slot Booking Receipt</button>
+                            <button onclick="showGuideScreen(9)" class="sm:w-auto px-5 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-black transition-all">Proceed to Verification Outcome</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-rose-800">If receipt is not visible, enable pop-up windows in browser settings.</p>
+                    </div>
+
+                    <div id="slot-sms-card" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 hidden">
+                        <p class="text-[10px] uppercase tracking-wider font-black text-emerald-700">SMS Confirmation</p>
+                        <p id="slot-sms-message" class="text-xs text-emerald-900 font-semibold mt-2 leading-relaxed">Your slot booking has been confirmed successfully.</p>
+                    </div>
+                </div>
+
+                <div id="slot-verification-guidance" class="hidden bg-white border border-slate-200/70 rounded-3xl p-5 md:p-7 shadow-sm space-y-5">
+                    <div>
+                        <h4 class="text-lg font-black text-slate-800">Certificate Verification</h4>
+                        <p class="text-xs text-slate-500 font-semibold mt-1">Next step guidance after successful slot booking.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-700 font-semibold">
+                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-3">Candidate must attend only booked HLC.</li>
+                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-3">Candidate must carry original documents.</li>
+                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-3">Candidate will receive ROC after verification.</li>
+                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-3">Mobile number should be verified carefully.</li>
+                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-3">Login ID SMS will be sent after successful verification.</li>
+                    </ul>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4">
+                            <p class="text-[10px] uppercase tracking-wider font-black text-indigo-700">ROC Guidance</p>
+                            <p class="text-xs text-indigo-900 font-semibold mt-2 leading-relaxed">Receipt of Certificates (ROC) is issued after successful document verification. ROC is required later for option entry and admission process.</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+                            <p class="text-[10px] uppercase tracking-wider font-black text-amber-700">Login ID SMS Guidance</p>
+                            <p class="text-xs text-amber-900 font-semibold mt-2 leading-relaxed">Login ID will be sent to registered mobile number after certificate verification. Do not share Login ID with others.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1369,7 +1828,7 @@
                     <span class="text-xl">💬</span>
                     <div class="text-left text-xs">
                         <div class="font-bold text-indigo-400">SMS Notification Alert</div>
-                        <p class="text-slate-200 mt-0.5">Your Login ID: <strong class="text-white">TGE2489543</strong> has been sent to your registered mobile number.</p>
+                        <p class="text-slate-200 mt-0.5">Your Login ID: <strong class="text-white">TGE2XXXX43</strong> has been sent to your registered mobile number.</p>
                     </div>
                 </div>
 
@@ -1441,15 +1900,15 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">TGEAPCET Registration Number</label>
-                            <input type="text" id="sim-pwd-reg" value="9543210678" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
+                            <input type="text" id="sim-pwd-reg" value="22XXXX04" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Hall Ticket Number</label>
-                            <input type="text" id="sim-pwd-ticket" value="240508543" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
+                            <input type="text" id="sim-pwd-ticket" value="2505XXXX92" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Rank</label>
-                            <input type="text" id="sim-pwd-rank" value="8500" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
+                            <input type="text" id="sim-pwd-rank" value="6917" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Date of Birth</label>
@@ -1499,13 +1958,13 @@
 
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Registered Mobile Number</label>
-                            <input type="text" id="sim-pwd-phone" value="9876543210" disabled
+                            <input type="text" id="sim-pwd-phone" value="98XXXXXX63" disabled
                                 class="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-500">
                         </div>
 
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Email ID</label>
-                            <input type="email" id="sim-pwd-email" value="pranav.sai@gmail.com"
+                            <input type="email" id="sim-pwd-email" value="ab***@gmail.com"
                                 class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
 
@@ -1567,12 +2026,12 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Login ID</label>
-                            <input type="text" id="sim-portal-login-id" placeholder="e.g. TGE2489543" value="TGE2489543"
+                            <input type="text" id="sim-portal-login-id" placeholder="e.g. TGE2XXXX43" value="TGE2XXXX43"
                                 class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Hall Ticket Number</label>
-                            <input type="text" id="sim-portal-ticket" placeholder="e.g. 240508543" value="240508543"
+                            <input type="text" id="sim-portal-ticket" placeholder="e.g. 2505XXXX92" value="2505XXXX92"
                                 class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-400 focus:outline-none">
                         </div>
                         <div>
@@ -1770,9 +2229,9 @@
                 <!-- TOP INFO BAR -->
                 <div class="bg-slate-100 border border-slate-200 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm text-xs font-semibold text-slate-700">
                     <div class="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-1.5 w-full">
-                        <div>Candidate Name: <span class="font-extrabold text-slate-900" id="sim-info-name-15">GANDLA SAI PRANAV</span></div>
-                        <div>Father Name: <span class="font-extrabold text-slate-900">GANDLA RAMESH</span></div>
-                        <div>Rank: <span class="font-extrabold text-slate-900" id="sim-info-rank-2">8500</span></div>
+                        <div>Candidate Name: <span class="font-extrabold text-slate-900" id="sim-info-name-15">Student Demo</span></div>
+                        <div>Father Name: <span class="font-extrabold text-slate-900">P. Demo</span></div>
+                        <div>Rank: <span class="font-extrabold text-slate-900" id="sim-info-rank-2">6917</span></div>
                         <div>Category: <span class="font-extrabold text-slate-900" id="sim-info-category-2">EWS</span></div>
                         <div>PH Status: <span class="font-extrabold text-slate-900">NO</span></div>
                     </div>
@@ -1924,15 +2383,15 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/40 text-xs font-semibold text-slate-600">
                         <div>
                             <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Candidate Name</span>
-                            <span class="text-slate-800 font-extrabold" id="sim-info-name-17">GANDLA SAI PRANAV</span>
+                            <span class="text-slate-800 font-extrabold" id="sim-info-name-17">Student Demo</span>
                         </div>
                         <div>
                             <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Hall Ticket Number</span>
-                            <span class="text-slate-800 font-extrabold" id="sim-info-ticket-17">240508543</span>
+                            <span class="text-slate-800 font-extrabold" id="sim-info-ticket-17">2505XXXX92</span>
                         </div>
                         <div>
                             <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Rank</span>
-                            <span class="text-slate-800 font-extrabold" id="sim-info-rank-17">8500</span>
+                            <span class="text-slate-800 font-extrabold" id="sim-info-rank-17">6917</span>
                         </div>
                         <div>
                             <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Category / Gender</span>
@@ -2047,7 +2506,7 @@
                         </div>
                         <h4 class="font-black text-emerald-800 text-sm uppercase tracking-wider">Tuition Fee Paid Successfully</h4>
                         <p class="text-slate-600 text-xs font-semibold leading-relaxed">
-                            Transaction ID: <span class="font-bold underline text-slate-800">TXN8543026859</span><br>
+                            Transaction ID: <span class="font-bold underline text-slate-800">TXNXXXX6859</span><br>
                             Tuition fee has been updated on the official server. You are now eligible for self-reporting.
                         </p>
                         <button onclick="showGuideScreen(19)" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition-all">
@@ -2074,11 +2533,11 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Candidate Name</span>
-                                <span class="text-slate-800 font-extrabold">GANDLA SAI PRANAV</span>
+                                <span class="text-slate-800 font-extrabold">Student Demo</span>
                             </div>
                             <div>
                                 <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Hall Ticket Number</span>
-                                <span class="text-slate-800 font-extrabold">240508543</span>
+                                <span class="text-slate-800 font-extrabold">2505XXXX92</span>
                             </div>
                             <div class="col-span-2">
                                 <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Allotted College</span>
@@ -2090,7 +2549,7 @@
                             </div>
                             <div>
                                 <span class="text-[9px] text-slate-400 font-black block uppercase mb-0.5">Admission Number</span>
-                                <span class="text-slate-800 font-extrabold">ADM-240508543-98</span>
+                                <span class="text-slate-800 font-extrabold">ADMXXXX0291</span>
                             </div>
                         </div>
                     </div>
@@ -2151,11 +2610,11 @@
                         </p>
 
                         <div class="grid sm:grid-cols-2 gap-x-6 gap-y-2 border-y border-slate-200 py-3 text-slate-600">
-                            <div>Hall Ticket No: <strong class="text-slate-900 font-bold">240508543</strong></div>
+                            <div>Hall Ticket No: <strong class="text-slate-900 font-bold">2505XXXX92</strong></div>
                             <div>Rank: <strong class="text-slate-900 font-bold">6917</strong></div>
-                            <div>Candidate Name: <strong class="text-slate-900 font-bold">Abyu Reddy</strong></div>
-                            <div>Father Name: <strong class="text-slate-900 font-bold">Narendar Reddy</strong></div>
-                            <div>Admission Number: <strong class="text-slate-900 font-bold">ADM-240508543-98</strong></div>
+                            <div>Candidate Name: <strong class="text-slate-900 font-bold">Student Demo</strong></div>
+                            <div>Father Name: <strong class="text-slate-900 font-bold">P. Demo</strong></div>
+                            <div>Admission Number: <strong class="text-slate-900 font-bold">ADMXXXX0291</strong></div>
                             <div>Category / Gender: <strong class="text-slate-900 font-bold">EWS / BOYS</strong></div>
                         </div>
 
@@ -2211,7 +2670,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="border-b border-slate-100 hover:bg-slate-50/50">
-                                        <td class="p-3 font-mono font-bold text-slate-900">TXN9543102640</td>
+                                        <td class="p-3 font-mono font-bold text-slate-900">TXNXXXX2640</td>
                                         <td class="p-3">Counselling Processing Fee</td>
                                         <td class="p-3">28-06-2025</td>
                                         <td class="p-3 text-right font-bold">₹1,200</td>
@@ -2220,7 +2679,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b border-slate-100 hover:bg-slate-50/50">
-                                        <td class="p-3 font-mono font-bold text-slate-900">TXN8543026859</td>
+                                        <td class="p-3 font-mono font-bold text-slate-900">TXNXXXX6859</td>
                                         <td class="p-3">Tuition Fee Payment</td>
                                         <td class="p-3">19-07-2025</td>
                                         <td class="p-3 text-right font-bold text-purple-700" id="sim-ledger-fee-amount">₹15,000</td>
@@ -2324,15 +2783,15 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Candidate Name</label>
-                        <input type="text" id="qd-name" value="GANDLA SAI PRANAV" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+                        <input type="text" id="qd-name" value="Student Demo" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Hall Ticket Number</label>
-                        <input type="text" id="qd-ticket" value="240508543" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+                        <input type="text" id="qd-ticket" value="2505XXXX92" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Rank</label>
-                        <input type="number" id="qd-rank" value="8500" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+                        <input type="number" id="qd-rank" value="6917" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-indigo-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Category</label>
@@ -4427,3 +4886,4 @@
 </body>
 
 </html>
+

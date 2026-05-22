@@ -188,19 +188,29 @@ export const RecommendationEngine = {
             }
         });
 
-        let results = [];
-        
-        // Stage 1: Preferred Districts & Preferred Branches
-        collegesDataset.forEach(college => {
-            const isPrefDist = chosenDistricts.length === 0 || chosenDistricts.includes(college.district);
-            if (!isPrefDist) return;
+        // Strict pre-filter pipeline:
+        // selected districts -> selected branches -> category/gender -> SAFE/MODERATE -> sorting
+        const filteredColleges = collegesDataset.filter(college => {
+            if (chosenDistricts.length === 0) return true;
+            return chosenDistricts.includes(college.district);
+        });
 
+        let results = [];
+        filteredColleges.forEach(college => {
             Object.keys(college.branches).forEach(bCode => {
-                const isPrefBranch = chosenBranches.length === 0 || chosenBranches.includes(bCode);
-                if (!isPrefBranch) return;
+                if (chosenBranches.length > 0 && !chosenBranches.includes(bCode)) return;
 
                 const branchInfo = college.branches[bCode];
-                const opt = evaluateOption(college, bCode, branchInfo, studentRank, category, gender, phase, college.qualityScore);
+                const opt = evaluateOption(
+                    college,
+                    bCode,
+                    branchInfo,
+                    studentRank,
+                    category,
+                    gender,
+                    phase,
+                    college.qualityScore
+                );
                 if (opt) {
                     opt.stage = 1;
                     opt.isExpandedSuggestion = false;
@@ -208,82 +218,6 @@ export const RecommendationEngine = {
                 }
             });
         });
-
-        // Stage 2: Alternative Districts & Preferred Branches
-        if (results.length < 15 && chosenDistricts.length > 0) {
-            const stage2Results = [];
-            collegesDataset.forEach(college => {
-                const isPrefDist = chosenDistricts.includes(college.district);
-                if (isPrefDist) return;
-
-                Object.keys(college.branches).forEach(bCode => {
-                    const isPrefBranch = chosenBranches.length === 0 || chosenBranches.includes(bCode);
-                    if (!isPrefBranch) return;
-
-                    const branchInfo = college.branches[bCode];
-                    const opt = evaluateOption(college, bCode, branchInfo, studentRank, category, gender, phase, college.qualityScore);
-                    if (opt) {
-                        opt.stage = 2;
-                        opt.isExpandedSuggestion = true;
-                        stage2Results.push(opt);
-                    }
-                });
-            });
-            results = [...results, ...stage2Results];
-        }
-
-        const csItRelated = ["CSE", "CSM", "CSD", "CSC", "CSO", "CIC", "IT", "INF", "ECE"];
-        const hasCsItPreference = chosenBranches.some(b => csItRelated.includes(b));
-
-        // Stage 3: Alternative Branches & Preferred Districts
-        if (results.length < 15 && chosenBranches.length > 0) {
-            const stage3Results = [];
-            collegesDataset.forEach(college => {
-                const isPrefDist = chosenDistricts.length === 0 || chosenDistricts.includes(college.district);
-                if (!isPrefDist) return;
-
-                Object.keys(college.branches).forEach(bCode => {
-                    const isPrefBranch = chosenBranches.includes(bCode);
-                    if (isPrefBranch) return;
-
-                    if (hasCsItPreference && !csItRelated.includes(bCode)) return;
-
-                    const branchInfo = college.branches[bCode];
-                    const opt = evaluateOption(college, bCode, branchInfo, studentRank, category, gender, phase, college.qualityScore);
-                    if (opt) {
-                        opt.stage = 3;
-                        opt.isExpandedSuggestion = true;
-                        stage3Results.push(opt);
-                    }
-                });
-            });
-            results = [...results, ...stage3Results];
-        }
-
-        // Stage 4: Alternative Branches & Alternative Districts
-        if (results.length < 15 && chosenBranches.length > 0 && chosenDistricts.length > 0) {
-            const stage4Results = [];
-            collegesDataset.forEach(college => {
-                const isPrefDist = chosenDistricts.includes(college.district);
-                if (isPrefDist) return;
-
-                Object.keys(college.branches).forEach(bCode => {
-                    const isPrefBranch = chosenBranches.includes(bCode);
-                    if (isPrefBranch) return;
-
-                    if (hasCsItPreference && !csItRelated.includes(bCode)) return;
-
-                    const branchInfo = college.branches[bCode];
-                    const opt = evaluateOption(college, bCode, branchInfo, studentRank, category, gender, phase, college.qualityScore);
-                    if (opt) {
-                        opt.stage = 4;
-                        opt.isExpandedSuggestion = true;
-                        stage4Results.push(opt);
-                    }
-                });
-            });
-            results = [...results, ...stage4Results];
-        }
 
         results = controlModerateRatio(results, chosenBranches);
 

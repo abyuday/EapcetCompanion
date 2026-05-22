@@ -18,6 +18,108 @@ let activeHlcDistrictFilter = "ALL";
 let generatedPreferences = [];
 let mockOptionsList = [];
 
+// Privacy masking helpers for public demos/screenshots
+function maskName(name = "Student Demo") {
+    const clean = String(name).trim();
+    if (!clean) return "Student Demo";
+    const parts = clean.split(/\s+/);
+    if (parts.length === 1) return `${parts[0].charAt(0).toUpperCase()}.`;
+    return `${parts[0].charAt(0).toUpperCase()}. ${parts[parts.length - 1]}`;
+}
+
+function maskPhone(phone = "") {
+    const digits = String(phone).replace(/\D/g, "");
+    if (digits.length < 4) return "98XXXXXX63";
+    return `${digits.slice(0, 2)}XXXXXX${digits.slice(-2)}`;
+}
+
+function maskAadhaar(aadhaar = "") {
+    const digits = String(aadhaar).replace(/\D/g, "");
+    const tail = digits.length >= 4 ? digits.slice(-4) : "4582";
+    return `XXXX XXXX ${tail}`;
+}
+
+function maskEmail(email = "") {
+    const safe = String(email).trim().toLowerCase();
+    const parts = safe.split("@");
+    if (parts.length !== 2) return "ab***@gmail.com";
+    const user = parts[0];
+    const domain = parts[1] || "gmail.com";
+    const head = user.slice(0, 2) || "ab";
+    return `${head}***@${domain}`;
+}
+
+function maskHallTicket(ticket = "") {
+    const val = String(ticket).replace(/\s/g, "");
+    if (val.length < 6) return "2505XXXX92";
+    return `${val.slice(0, 4)}XXXX${val.slice(-2)}`;
+}
+
+function maskRegistrationNo(reg = "") {
+    const val = String(reg).replace(/\s/g, "");
+    if (val.length < 6) return "22XXXX04";
+    return `${val.slice(0, 2)}XXXX${val.slice(-2)}`;
+}
+
+function maskCertificateId(prefix = "DOC", id = "") {
+    const digits = String(id).replace(/\D/g, "");
+    const tail = digits.length >= 3 ? digits.slice(-3) : "782";
+    return `${prefix}XXXX${tail}`;
+}
+
+function maskTransactionId(txn = "") {
+    const digits = String(txn).replace(/\D/g, "");
+    const tail = digits.length >= 4 ? digits.slice(-4) : "4587";
+    return `TXNXXXX${tail}`;
+}
+
+function maskAdmissionNo(adm = "") {
+    const digits = String(adm).replace(/\D/g, "");
+    const tail = digits.length >= 4 ? digits.slice(-4) : "0291";
+    return `ADMXXXX${tail}`;
+}
+
+function maskLoginId(loginId = "") {
+    const raw = String(loginId).replace(/\s/g, "");
+    if (raw.length < 6) return "TGE2XXXX43";
+    return `${raw.slice(0, 4)}XXXX${raw.slice(-2)}`;
+}
+
+function applyPrivacyMaskingToDom() {
+    const fieldMaskers = [
+        { selector: '#spa-fee-ticket, #spa-verify-ticket, #sim-slot-login-ticket, #sim-pwd-ticket, #sim-portal-ticket, #sim-summary-ticket', fn: maskHallTicket },
+        { selector: '#spa-fee-reg, #spa-verify-reg, #sim-slot-login-reg, #sim-pwd-reg', fn: maskRegistrationNo },
+        { selector: '#sim-pwd-phone', fn: maskPhone },
+        { selector: '#sim-pwd-email', fn: maskEmail },
+    ];
+
+    fieldMaskers.forEach(({ selector, fn }) => {
+        document.querySelectorAll(selector).forEach(el => {
+            if (el && 'value' in el) {
+                el.value = fn(el.value || "");
+            }
+        });
+    });
+
+    // Broad pass for transaction, hall-ticket, registration, aadhaar-like text in static nodes.
+    const textNodes = document.querySelectorAll('span,strong,td,p,div');
+    textNodes.forEach(node => {
+        const text = node.textContent || "";
+        if (!text) return;
+        let updated = text
+            .replace(/TXN\d{6,}/g, (m) => maskTransactionId(m))
+            .replace(/\bADM[-\w]*\d{2,}\b/g, (m) => maskAdmissionNo(m))
+            .replace(/\b\d{12}\b/g, (m) => maskAadhaar(m))
+            .replace(/\b\d{10}\b/g, (m) => maskPhone(m))
+            .replace(/\b\d{8,}\b/g, (m) => {
+                if (text.toLowerCase().includes('hall ticket')) return maskHallTicket(m);
+                if (text.toLowerCase().includes('registration')) return maskRegistrationNo(m);
+                return m;
+            });
+        if (updated !== text) node.textContent = updated;
+    });
+}
+
 // Load dynamic counselling data
 async function loadCounsellingData() {
     try {
@@ -59,8 +161,10 @@ async function loadCounsellingData() {
 // Initialize Lucide Icons on DOM ready
 window.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
+    applyPrivacyMaskingToDom();
     populateHlcs();
     loadCounsellingData();
+    initPlatformUpdatePopup();
 
     // Bind real-time regeneration event listeners
     const rankEl = document.getElementById('student-rank');
@@ -84,6 +188,58 @@ window.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('change', generatePreferenceList);
     });
 });
+
+const PLATFORM_UPDATE_POPUP_KEY = 'eapcet_platform_update_seen_v2';
+
+function initPlatformUpdatePopup() {
+    try {
+        const seen = localStorage.getItem(PLATFORM_UPDATE_POPUP_KEY);
+        if (seen === '1') return;
+    } catch (err) {
+        // ignore storage access errors and continue to show once for this session
+    }
+
+    setTimeout(() => {
+        const popup = document.getElementById('platform-update-popup');
+        const card = document.getElementById('platform-update-popup-card');
+        if (!popup || !card) return;
+
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+
+        requestAnimationFrame(() => {
+            card.classList.remove('scale-95', 'opacity-0');
+            card.classList.add('scale-100', 'opacity-100');
+        });
+    }, 900);
+}
+
+function closePlatformUpdatePopup() {
+    const popup = document.getElementById('platform-update-popup');
+    const card = document.getElementById('platform-update-popup-card');
+    if (!popup || !card) return;
+
+    card.classList.remove('scale-100', 'opacity-100');
+    card.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+        popup.classList.add('hidden');
+        popup.classList.remove('flex');
+    }, 220);
+
+    try {
+        localStorage.setItem(PLATFORM_UPDATE_POPUP_KEY, '1');
+    } catch (err) {
+        // best effort only
+    }
+}
+
+function handlePopupExploreUpdates() {
+    closePlatformUpdatePopup();
+    showView('guide');
+    showGuideScreen(1);
+    showToast("Updates Ready", "Explore the upgraded recommendation and counselling guide modules.", "sparkles");
+}
 
 // Interactive Page View Swapping Logic
 function showView(viewId) {
@@ -283,7 +439,7 @@ function openPdfPreviewModal() {
     }
 
     const name = "Student";
-    const rank = document.getElementById('student-rank').value || "8500";
+    const rank = document.getElementById('student-rank').value || "6917";
     const category = document.getElementById('student-category').value || "EWS";
 
     document.getElementById('pdf-student').innerText = name;
@@ -332,7 +488,7 @@ function exportToExcel() {
     // Header Info
     csvContent += "TG EAPCET Counselling Companion - Generated Preference Report\n";
     csvContent += `Student Name,Student\n`;
-    csvContent += `EAPCET Rank,${document.getElementById('student-rank').value || '8500'}\n`;
+    csvContent += `EAPCET Rank,${document.getElementById('student-rank').value || '6917'}\n`;
     csvContent += `Category,${document.getElementById('student-category').value || 'EWS'}\n\n`;
 
     // Table Header Column
@@ -2253,6 +2409,8 @@ window.toggleMobileMenu = toggleMobileMenu;
 window.getExactCutoff = getExactCutoff;
 window.getCutoffForPhase = getCutoffForPhase;
 window.generatePreferenceList = generatePreferenceList;
+window.closePlatformUpdatePopup = closePlatformUpdatePopup;
+window.handlePopupExploreUpdates = handlePopupExploreUpdates;
 window.renderPreferences = renderPreferences;
 window.removeItem = removeItem;
 window.moveItem = moveItem;
@@ -2293,15 +2451,23 @@ window.showToast = showToast;
 //                   COUNSELLING GUIDE SIMULATOR FUNCTIONS
 // =========================================================================
 
-let simPassword = "AbyuReddy@123";
+let simPassword = "Demo@1234";
 let simOtpTimerInterval = null;
 let simSelectedDistricts = new Set(['HYDERABAD']);
 let simSelectedBranches = new Set(['CSE', 'CSM']);
 let simSavedOptions = []; // array of { priority, collegeCode, collegeName, branch, district, type }
+let simSlotBookingState = {
+    loggedIn: false,
+    selectedCategory: "ALL",
+    selectedHlcCode: "",
+    selectedDate: "",
+    selectedSlot: "",
+    receipt: null
+};
 
 // Persistent candidate information
-let simCandidateName = "Abyu Reddy";
-let simHallTicket = "240508543";
+let simCandidateName = "Student Demo";
+let simHallTicket = "2505XXXX92";
 let simRank = 6917;
 let simCategory = "EWS";
 let simDetailsSet = false;
@@ -2369,13 +2535,13 @@ function closeSimQuickDetailsModal() {
 
 function handleSimQuickDetailsSubmit() {
     const nameVal = document.getElementById('qd-name')?.value.trim();
-    simCandidateName = nameVal || "GANDLA SAI PRANAV";
+    simCandidateName = maskName(nameVal || "Student Demo");
     
     const ticketVal = document.getElementById('qd-ticket')?.value.trim();
-    simHallTicket = ticketVal || "240508543";
+    simHallTicket = maskHallTicket(ticketVal || "2505XXXX92");
     
     const rankVal = parseInt(document.getElementById('qd-rank')?.value);
-    simRank = isNaN(rankVal) ? 8500 : rankVal;
+    simRank = isNaN(rankVal) ? 6917 : rankVal;
     
     const catVal = document.getElementById('qd-category')?.value;
     simCategory = catVal || "EWS";
@@ -2416,8 +2582,11 @@ function handleSimQuickDetailsSubmit() {
 }
 
 function updateDOMCandidateDetails() {
+    const maskedName = maskName(simCandidateName);
+    const maskedTicket = maskHallTicket(simHallTicket);
+
     const nameEl = document.getElementById('sim-info-name');
-    if (nameEl) nameEl.innerText = simCandidateName;
+    if (nameEl) nameEl.innerText = maskedName;
     const rankEl2 = document.getElementById('sim-info-rank');
     if (rankEl2) rankEl2.innerText = simRank;
     const catEl2 = document.getElementById('sim-info-category');
@@ -2429,15 +2598,15 @@ function updateDOMCandidateDetails() {
     if (catEl2_2) catEl2_2.innerText = simCategory;
     
     const ticketInput = document.getElementById('sim-portal-ticket');
-    if (ticketInput) ticketInput.value = simHallTicket;
+    if (ticketInput) ticketInput.value = maskedTicket;
 
     const name15 = document.getElementById('sim-info-name-15');
-    if (name15) name15.innerText = simCandidateName;
+    if (name15) name15.innerText = maskedName;
     
     const name17 = document.getElementById('sim-info-name-17');
-    if (name17) name17.innerText = simCandidateName;
+    if (name17) name17.innerText = maskedName;
     const ticket17 = document.getElementById('sim-info-ticket-17');
-    if (ticket17) ticket17.innerText = simHallTicket;
+    if (ticket17) ticket17.innerText = maskedTicket;
     const rank17 = document.getElementById('sim-info-rank-17');
     if (rank17) rank17.innerText = simRank;
     const cat17 = document.getElementById('sim-info-category-17');
@@ -2472,112 +2641,725 @@ function showGuideScreen(screenNum) {
         initSimFilters();
     } else if (screenNum === 15) {
         renderSimWorkspace();
+    } else if (screenNum === 7) {
+        initSlotBookingSection();
     }
 }
 
-function handleSimLogin() {
-    const btn = document.getElementById('sim-login-btn');
-    const hallTicket = document.getElementById('sim-hall-ticket')?.value.trim();
-    const regNumber = document.getElementById('sim-reg-number')?.value.trim();
-    const captcha = document.getElementById('sim-captcha')?.value.trim();
 
-    if (!hallTicket || !regNumber || !captcha) {
-        showToast("Validation Error", "Please fill in all verification credentials!", "alert-triangle");
-        return;
+function advanceFeeStep(stepNum) {
+    // Hide all steps
+    const steps = ['fee-step-login', 'fee-step-info', 'fee-step-gateway', 'fee-step-success'];
+    steps.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.classList.add('hidden');
+    });
+
+    // Reset indicators
+    for (let i = 1; i <= 3; i++) {
+        const ind = document.getElementById(`fee-indicator-${i}`);
+        const line = document.getElementById(`fee-line-${i}`);
+        if (ind) {
+            ind.className = i <= stepNum 
+                ? "w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-bold shadow-md shadow-purple-200 transition-all"
+                : "w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] font-bold transition-all";
+        }
+        if (line) {
+            line.className = i < stepNum 
+                ? "w-8 h-1 bg-purple-600 rounded-full transition-all"
+                : "w-8 h-1 bg-slate-100 rounded-full transition-all";
+        }
     }
 
-    if (captcha.toUpperCase() !== "A9B8C") {
-        showToast("Invalid Captcha", "The security verification captcha is incorrect.", "alert-triangle");
-        return;
+    const labels = ["", "Authentication", "Basic Information", "Payment Gateway"];
+    const labelEl = document.getElementById('fee-step-label');
+    if (labelEl && stepNum <= 3) {
+        labelEl.innerText = labels[stepNum];
     }
 
-    const rank = document.getElementById('student-rank')?.value || '8500';
-    const category = document.getElementById('student-category')?.value || 'EWS';
-
-    // Update global persistent variables
-    simHallTicket = hallTicket;
-    simRank = parseInt(rank) || 8500;
-    simCategory = category;
-    const studentNameInput = document.getElementById('student-name');
-    if (studentNameInput && studentNameInput.value.trim()) {
-        simCandidateName = studentNameInput.value.trim();
+    // Mentor tips
+    const mentorTips = [
+        "",
+        "Login using your official hall ticket and registration numbers to retrieve your details.",
+        "Verify your auto-fetched details. Enter valid certificate IDs and mobile number.",
+        "Select your preferred gateway. Do not refresh the page during transaction processing."
+    ];
+    const mentorEl = document.getElementById('fee-mentor-text');
+    if (mentorEl && stepNum <= 3) {
+        mentorEl.innerText = mentorTips[stepNum];
     }
-    simDetailsSet = true;
-    updateDOMCandidateDetails();
 
-    const simPayRank = document.getElementById('sim-pay-rank');
-    if (simPayRank) simPayRank.innerText = rank;
-    const simPayCategory = document.getElementById('sim-pay-category');
-    if (simPayCategory) simPayCategory.innerText = category;
-
-    btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin inline-block mr-1"></i> Validating Credentials...`;
-    lucide.createIcons();
-
-    setTimeout(() => {
-        btn.innerHTML = "Pay Fee Online";
-        showGuideScreen(3);
-        showToast("Authenticated", "Credentials validated successfully!", "check-circle");
-    }, 1000);
+    if (stepNum === 1) {
+        document.getElementById('fee-step-login')?.classList.remove('hidden');
+    } else if (stepNum === 2) {
+        // Validate login first if coming from 1 (optional, assuming success)
+        const hallTicket = document.getElementById('spa-fee-ticket')?.value.trim();
+        const captcha = document.getElementById('spa-fee-captcha')?.value.trim();
+        if (captcha && captcha.toUpperCase() !== "A9B8C") {
+            showToast("Invalid Captcha", "The security verification captcha is incorrect.", "alert-triangle");
+            advanceFeeStep(1);
+            return;
+        }
+        if (hallTicket) {
+            simHallTicket = hallTicket;
+            simDetailsSet = true;
+            updateDOMCandidateDetails();
+        }
+        document.getElementById('fee-step-info')?.classList.remove('hidden');
+    } else if (stepNum === 3) {
+        document.getElementById('fee-step-gateway')?.classList.remove('hidden');
+    } else if (stepNum === 4) {
+        document.getElementById('fee-step-success')?.classList.remove('hidden');
+        if (labelEl) labelEl.innerText = "Payment Completed";
+        if (mentorEl) mentorEl.innerText = "Payment successful. Please proceed to verify the payment status.";
+    }
 }
 
-function handleSimPayment() {
-    const triggerPanel = document.getElementById('pay-trigger-panel');
-    const loader = document.getElementById('sim-payment-loader');
+function simulateFeePaymentProcess() {
+    const actions = document.getElementById('fee-payment-actions');
+    const loader = document.getElementById('fee-payment-loader-overlay');
     
-    if (triggerPanel) triggerPanel.classList.add('hidden');
-    if (loader) loader.classList.remove('hidden');
-
-    setTimeout(() => {
-        if (triggerPanel) triggerPanel.classList.remove('hidden');
-        if (loader) loader.classList.add('hidden');
-        showToast("Payment Successful", "Processing Fee Paid Successfully!", "check-circle");
-        showGuideScreen(5);
-    }, 1800);
-}
-
-function handleSimVerify() {
-    const btn = document.getElementById('sim-verify-btn');
-    const captcha = document.getElementById('sim-verify-captcha')?.value.trim();
-
-    if (captcha.toUpperCase() !== "VER5") {
-        showToast("Invalid Captcha", "The security verification captcha is incorrect.", "alert-triangle");
-        return;
+    if (actions) actions.classList.add('hidden');
+    if (loader) {
+        loader.classList.remove('hidden');
+        loader.classList.add('flex');
     }
 
-    btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin inline-block mr-1"></i> Checking Bank Transaction ID...`;
-    lucide.createIcons();
+    setTimeout(() => {
+        if (actions) actions.classList.remove('hidden');
+        if (loader) {
+            loader.classList.add('hidden');
+            loader.classList.remove('flex');
+        }
+        showToast("Payment Successful", "Processing Fee Paid Successfully!", "check-circle");
+        advanceFeeStep(4);
+    }, 2500);
+}
+
+function simulateVerificationProcess() {
+    const formContainer = document.getElementById('verify-form-container');
+    const loaderContainer = document.getElementById('verify-loader-container');
+    const resultContainer = document.getElementById('verify-result-container');
+    
+    // reset
+    if (resultContainer) {
+        resultContainer.innerHTML = '';
+        resultContainer.classList.add('hidden');
+    }
+    if (formContainer) formContainer.classList.add('hidden');
+    if (loaderContainer) {
+        loaderContainer.classList.remove('hidden');
+        loaderContainer.classList.add('flex');
+    }
 
     setTimeout(() => {
-        btn.innerHTML = "Verify Payment Transaction";
-        showGuideScreen(6);
-        showToast("Verified", "Transaction Found Successful & Saved", "check-circle");
-    }, 1000);
+        if (loaderContainer) {
+            loaderContainer.classList.add('hidden');
+            loaderContainer.classList.remove('flex');
+        }
+        if (resultContainer) resultContainer.classList.remove('hidden');
+        
+        // Hardcoded success for happy path, but styled beautifully
+        if (resultContainer) {
+            resultContainer.innerHTML = `
+                <div class="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-6 text-center w-full max-w-sm shadow-lg animate-fade-in relative overflow-hidden group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-[2rem] blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                        <i data-lucide="check-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-emerald-900 mb-1">Transaction Successful</h4>
+                    <p class="text-xs font-semibold text-emerald-700 mb-6">Payment verified with official records.</p>
+                    
+                    <div class="bg-white rounded-xl p-4 text-left border border-emerald-100 mb-6 shadow-sm">
+                        <div class="flex justify-between py-2 border-b border-slate-50">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Candidate Name</span>
+                            <span class="text-xs font-black text-slate-700">${simCandidateName || 'ABYU REDDY'}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-slate-50">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Transaction ID</span>
+                            <span class="text-xs font-black text-slate-700">${maskTransactionId("TXN984530284")}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-slate-50">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Amount Paid</span>
+                            <span class="text-xs font-black text-emerald-600">₹1,200.00</span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Status</span>
+                            <span class="text-[10px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">SUCCESS</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="handleNavNavigate(7)" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg hover:shadow-emerald-300 flex items-center justify-center gap-2 relative z-10">
+                        Proceed to Slot Booking <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+            showToast("Verified", "Transaction Found Successful", "check-circle");
+        }
+        if (window.lucide) window.lucide.createIcons();
+    }, 2500);
 }
+
+// Deprecated old functions kept to prevent errors if referenced elsewhere (optional)
+function handleSimLogin() {}
+function handleSimPayment() {}
+function handleSimVerify() {}
 
 function handleSimProceedToSlotBooking() {
     showGuideScreen(7);
 }
 
-function handleSimBookSlot() {
-    const hlcName = document.getElementById('sim-hlc-name')?.value;
-    const date = document.querySelector('input[name="sim-slot-date"]:checked')?.value || '02-07-2025';
-    const time = document.querySelector('input[name="sim-slot-time"]:checked')?.value || '09:00 AM';
+const simSlotCategoryInfo = {
+    "ALL": "General category candidates can continue with ALL category slots across available HLCs.",
+    "NCC": "NCC candidates should choose designated HLC/date windows where NCC verification is listed.",
+    "SPORTS": "Sports category candidates should verify SG/Sports category windows before confirming slot.",
+    "CAP": "CAP candidates must book a slot where CAP verification is available in special category schedule.",
+    "PH": "PH candidates should choose PHC-enabled verification dates at designated HLC centers.",
+    "ANGLO-INDIAN": "Anglo-Indian category candidates must choose designated category slots where available."
+};
 
-    if (!hlcName) {
-        showToast("Selection Needed", "Please select a Helpline Centre.", "alert-triangle");
+function getSimSlotCategoryMatchers(category) {
+    if (category === "NCC") return ["NCC"];
+    if (category === "SPORTS") return ["SPORTS", "SG"];
+    if (category === "CAP") return ["CAP"];
+    if (category === "PH") return ["PHC", "PH"];
+    if (category === "ANGLO-INDIAN") return ["ANGLO-INDIAN", "ANG"];
+    return ["OC/EWS/BC/SC/ST", "MINORITIES"];
+}
+
+function parseDdMmYyyy(dateStr) {
+    const parts = (dateStr || "").split("-");
+    if (parts.length !== 3) return null;
+    const day = Number(parts[0]);
+    const month = Number(parts[1]);
+    const year = Number(parts[2]);
+    if (!day || !month || !year) return null;
+    return new Date(year, month - 1, day);
+}
+
+function formatDdMmYyyy(dateObj) {
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
+function formatSlotDateDisplay(dateStr) {
+    const dt = parseDdMmYyyy(dateStr);
+    if (!dt) return dateStr;
+    return dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function getSimSlotHlcData() {
+    if (Array.isArray(hlcDataset) && hlcDataset.length > 0) {
+        return hlcDataset;
+    }
+    return [
+        {
+            code: "MASB40",
+            name: "GOVERNMENT POLYTECHNIC",
+            place: "MASAB TANK",
+            district: "HYDERABAD",
+            slots: ["09:00 AM to 09:30 AM", "09:30 AM to 10:00 AM", "10:00 AM to 10:30 AM", "11:30 AM to 12:00 Noon"],
+            special_categories: [{ dates: "01-07-2025 to 03-07-2025", categories: "CAP and SPORTS and OC/EWS/BC/SC/ST/MINORITIES" }]
+        },
+        {
+            code: "JNTH06",
+            name: "JNTU COLLEGE OF ENGINEERING",
+            place: "KUKATPALLY",
+            district: "MEDCHAL",
+            slots: ["09:00 AM to 09:30 AM", "09:30 AM to 10:00 AM", "10:00 AM to 10:30 AM", "11:30 AM to 12:00 Noon"],
+            special_categories: [{ dates: "01-07-2025 to 08-07-2025", categories: "NCC and PHC and ANGLO-INDIAN and OC/EWS/BC/SC/ST/MINORITIES" }]
+        }
+    ];
+}
+
+function initSlotBookingSection(forceReset = false) {
+    const districtSelect = document.getElementById('slot-hlc-district-filter');
+    const categoryPanel = document.getElementById('slot-booking-category-panel');
+    const workspace = document.getElementById('slot-booking-workspace');
+    const receiptPanel = document.getElementById('slot-booking-receipt-panel');
+    const verificationPanel = document.getElementById('slot-verification-guidance');
+    const confirmModal = document.getElementById('slot-confirm-modal');
+
+    const ticketInput = document.getElementById('sim-slot-login-ticket');
+    const regInput = document.getElementById('sim-slot-login-reg');
+    const dobInput = document.getElementById('sim-slot-login-dob');
+    const captchaInput = document.getElementById('sim-slot-login-captcha');
+    if (ticketInput) ticketInput.value = simHallTicket;
+    if (regInput && !regInput.value) regInput.value = maskRegistrationNo("220004");
+    if (dobInput && !dobInput.value) dobInput.value = "2006-08-15";
+    if (captchaInput && forceReset) captchaInput.value = "";
+
+    if (forceReset) {
+        simSlotBookingState = {
+            loggedIn: false,
+            selectedCategory: "ALL",
+            selectedHlcCode: "",
+            selectedDate: "",
+            selectedSlot: "",
+            receipt: null
+        };
+    }
+
+    if (categoryPanel) categoryPanel.classList.toggle('hidden', !simSlotBookingState.loggedIn);
+    if (workspace) workspace.classList.toggle('hidden', !simSlotBookingState.loggedIn);
+    if (receiptPanel && (!simSlotBookingState.receipt || forceReset)) receiptPanel.classList.add('hidden');
+    if (verificationPanel && (!simSlotBookingState.receipt || forceReset)) verificationPanel.classList.add('hidden');
+    if (confirmModal) confirmModal.classList.add('hidden');
+
+    if (districtSelect) {
+        const previousValue = districtSelect.value || "ALL";
+        const districts = [...new Set(getSimSlotHlcData().map(h => h.district).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        districtSelect.innerHTML = '<option value="ALL">All Districts</option>';
+        districts.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.innerText = d;
+            districtSelect.appendChild(opt);
+        });
+        districtSelect.value = districts.includes(previousValue) ? previousValue : "ALL";
+    }
+
+    updateSimSlotCategoryButtons();
+    renderSimSlotHlcList();
+}
+
+function handleSimSlotLoginAndShow() {
+    const ticket = document.getElementById('sim-slot-login-ticket')?.value.trim();
+    const reg = document.getElementById('sim-slot-login-reg')?.value.trim();
+    const dob = document.getElementById('sim-slot-login-dob')?.value.trim();
+    const captcha = document.getElementById('sim-slot-login-captcha')?.value.trim();
+
+    if (!ticket || !reg || !dob || !captcha) {
+        showToast("Missing Fields", "Please enter all login fields to view available slots.", "alert-triangle");
+        return;
+    }
+    if (captcha !== "8246") {
+        showToast("Invalid Captcha", "Captcha mismatch. Type 8246 and try again.", "alert-triangle");
         return;
     }
 
-    // Populate verified details in Screen 9 dynamically
-    const verifiedHlc = document.getElementById('sim-verified-hlc');
-    if (verifiedHlc) verifiedHlc.innerText = hlcName;
-    const verifiedDate = document.getElementById('sim-verified-date');
-    if (verifiedDate) verifiedDate.innerText = date;
-    const verifiedTime = document.getElementById('sim-verified-time');
-    if (verifiedTime) verifiedTime.innerText = time;
+    simHallTicket = ticket;
+    simDetailsSet = true;
+    updateDOMCandidateDetails();
+    simSlotBookingState.loggedIn = true;
 
-    showToast("Slot Confirmed", `Successfully booked verification at ${hlcName} on ${date} at ${time}!`, "check-circle");
-    showGuideScreen(9);
+    document.getElementById('slot-booking-category-panel')?.classList.remove('hidden');
+    document.getElementById('slot-booking-workspace')?.classList.remove('hidden');
+    renderSimSlotHlcList();
+
+    showToast("Login Verified", "Slot booking schedule loaded successfully.", "check-circle");
+}
+
+function setSimSlotCategory(category) {
+    simSlotBookingState.selectedCategory = category;
+    simSlotBookingState.selectedDate = "";
+    simSlotBookingState.selectedSlot = "";
+    updateSimSlotCategoryButtons();
+    renderSimSlotHlcList();
+}
+
+function updateSimSlotCategoryButtons() {
+    const current = simSlotBookingState.selectedCategory || "ALL";
+    document.querySelectorAll('.slot-category-btn').forEach(btn => {
+        const cat = btn.getAttribute('data-slot-category');
+        if (cat === current) {
+            btn.className = "slot-category-btn px-3 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-black transition-all";
+        } else {
+            btn.className = "slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all hover:bg-slate-50";
+        }
+    });
+
+    const desc = document.getElementById('slot-category-desc');
+    if (desc) desc.innerText = simSlotCategoryInfo[current] || simSlotCategoryInfo.ALL;
+}
+
+function hlcSupportsCategory(hlc, category) {
+    const entries = Array.isArray(hlc?.special_categories) ? hlc.special_categories : [];
+    const matchers = getSimSlotCategoryMatchers(category);
+    if (entries.length === 0) return category === "ALL";
+    return entries.some(entry => {
+        const text = (entry.categories || "").toUpperCase();
+        return matchers.some(token => text.includes(token));
+    });
+}
+
+function getHlcDateSetForCategory(hlc, category) {
+    const entries = Array.isArray(hlc?.special_categories) ? hlc.special_categories : [];
+    const matchers = getSimSlotCategoryMatchers(category);
+    const allowedEntries = entries.filter(entry => {
+        const text = (entry.categories || "").toUpperCase();
+        return matchers.some(token => text.includes(token));
+    });
+
+    const sourceEntries = allowedEntries.length > 0 ? allowedEntries : (category === "ALL" ? entries : []);
+    const dateSet = new Set();
+
+    sourceEntries.forEach(entry => {
+        const range = entry.dates || "";
+        if (range.includes("to")) {
+            const [startRaw, endRaw] = range.split("to").map(v => v.trim());
+            const start = parseDdMmYyyy(startRaw);
+            const end = parseDdMmYyyy(endRaw);
+            if (start && end) {
+                const cursor = new Date(start);
+                while (cursor <= end) {
+                    dateSet.add(formatDdMmYyyy(cursor));
+                    cursor.setDate(cursor.getDate() + 1);
+                }
+            }
+        } else {
+            const single = parseDdMmYyyy(range.trim());
+            if (single) dateSet.add(formatDdMmYyyy(single));
+        }
+    });
+
+    return dateSet;
+}
+
+function renderSimSlotHlcList() {
+    const container = document.getElementById('slot-hlc-results');
+    if (!container) return;
+
+    const search = (document.getElementById('slot-hlc-search')?.value || "").trim().toUpperCase();
+    const district = document.getElementById('slot-hlc-district-filter')?.value || "ALL";
+    const category = simSlotBookingState.selectedCategory || "ALL";
+
+    const records = getSimSlotHlcData().filter(hlc => {
+        if (district !== "ALL" && hlc.district !== district) return false;
+        if (!search) return true;
+        const hay = `${hlc.name} ${hlc.place} ${hlc.district}`.toUpperCase();
+        return hay.includes(search);
+    });
+
+    if (records.length === 0) {
+        container.innerHTML = '<div class="text-xs font-semibold text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-3">No HLC matched your search. Try a different district or keyword.</div>';
+        renderSimSlotCalendar();
+        return;
+    }
+
+    container.innerHTML = "";
+    records.forEach(hlc => {
+        const supports = hlcSupportsCategory(hlc, category);
+        const isSelected = simSlotBookingState.selectedHlcCode === hlc.code;
+        const capacityLabel = !supports ? "Not Eligible" : (Array.isArray(hlc.slots) && hlc.slots.length >= 12 ? "Open Slots" : "Limited Slots");
+
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.className = `w-full text-left p-4 rounded-2xl border transition-all ${isSelected ? 'border-indigo-300 bg-indigo-50 shadow-sm' : 'border-slate-200 bg-white hover:bg-slate-50'} ${supports ? '' : 'opacity-70'}`;
+        btn.innerHTML = `
+            <div class="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                    <p class="text-xs font-black text-slate-800">${hlc.name}</p>
+                    <p class="text-[11px] text-slate-500 font-semibold mt-1">${hlc.place}, ${hlc.district}</p>
+                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-black ${supports ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500 border border-slate-200'}">${capacityLabel}</span>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 text-[10px] font-bold">
+                <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${(hlc.slots || []).length || 16} slots/day</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${hlc.code || 'HLC'}</span>
+            </div>
+        `;
+        btn.addEventListener('click', () => {
+            if (!supports) {
+                showToast("Category Restriction", `Selected category schedule is not available at ${hlc.name}.`, "alert-triangle");
+                return;
+            }
+            simSlotBookingState.selectedHlcCode = hlc.code;
+            simSlotBookingState.selectedDate = "";
+            simSlotBookingState.selectedSlot = "";
+            renderSimSlotHlcList();
+            renderSimSlotCalendar();
+            renderSimSlotTimes();
+        });
+        container.appendChild(btn);
+    });
+
+    const selected = records.find(r => r.code === simSlotBookingState.selectedHlcCode);
+    if (!selected && records.length > 0) {
+        const firstSupported = records.find(r => hlcSupportsCategory(r, category));
+        if (firstSupported) {
+            simSlotBookingState.selectedHlcCode = firstSupported.code;
+            renderSimSlotHlcList();
+            return;
+        } else {
+            simSlotBookingState.selectedHlcCode = "";
+        }
+    }
+
+    renderSimSlotCalendar();
+    renderSimSlotTimes();
+}
+
+function renderSimSlotCalendar() {
+    const selectedMeta = document.getElementById('slot-selected-hlc-meta');
+    const calendarGrid = document.getElementById('slot-calendar-grid');
+    const calendarState = document.getElementById('slot-calendar-state');
+    if (!selectedMeta || !calendarGrid || !calendarState) return;
+
+    const hlc = getSimSlotHlcData().find(h => h.code === simSlotBookingState.selectedHlcCode);
+    if (!hlc) {
+        selectedMeta.innerText = "Choose an HLC card to view schedule.";
+        calendarGrid.innerHTML = "";
+        calendarState.innerText = "Select HLC to load available dates.";
+        return;
+    }
+
+    selectedMeta.innerText = `${hlc.name}, ${hlc.place}, ${hlc.district}`;
+    const dateSet = getHlcDateSetForCategory(hlc, simSlotBookingState.selectedCategory);
+    const availableDates = Array.from(dateSet).sort((a, b) => (parseDdMmYyyy(a) || 0) - (parseDdMmYyyy(b) || 0));
+
+    if (availableDates.length === 0) {
+        calendarGrid.innerHTML = "";
+        calendarState.innerText = "No date window found for selected category at this HLC.";
+        simSlotBookingState.selectedDate = "";
+        return;
+    }
+
+    const start = parseDdMmYyyy(availableDates[0]);
+    const cells = [];
+    for (let i = 0; i < 14; i++) {
+        const d = new Date(start);
+        d.setDate(start.getDate() + i);
+        const key = formatDdMmYyyy(d);
+        const isAllowed = dateSet.has(key);
+        let state = "disabled";
+        if (isAllowed) state = (i % 5 === 0 ? "full" : "available");
+        cells.push({ key, label: formatSlotDateDisplay(key), state });
+    }
+
+    if (simSlotBookingState.selectedDate) {
+        const selectedCell = cells.find(c => c.key === simSlotBookingState.selectedDate && c.state === "available");
+        if (!selectedCell) simSlotBookingState.selectedDate = "";
+    }
+
+    calendarGrid.innerHTML = "";
+    cells.forEach(cell => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.title = cell.state === "available" ? "Available for booking" : (cell.state === "full" ? "Full - choose another date" : "Unavailable for selected category");
+        const selectedClass = simSlotBookingState.selectedDate === cell.key ? "ring-2 ring-indigo-500" : "";
+        if (cell.state === "available") {
+            btn.className = `p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-[11px] font-black text-center transition-all hover:bg-emerald-100 ${selectedClass}`;
+            btn.addEventListener('click', () => {
+                simSlotBookingState.selectedDate = cell.key;
+                simSlotBookingState.selectedSlot = "";
+                renderSimSlotCalendar();
+                renderSimSlotTimes();
+            });
+        } else if (cell.state === "full") {
+            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 text-[11px] font-black text-center cursor-not-allowed";
+            btn.disabled = true;
+        } else {
+            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-slate-400 text-[11px] font-black text-center cursor-not-allowed";
+            btn.disabled = true;
+        }
+        btn.innerText = cell.label;
+        calendarGrid.appendChild(btn);
+    });
+
+    calendarState.innerText = simSlotBookingState.selectedDate
+        ? `Selected date: ${formatSlotDateDisplay(simSlotBookingState.selectedDate)}`
+        : "Choose a green date to continue.";
+}
+
+function renderSimSlotTimes() {
+    const timeGrid = document.getElementById('slot-time-grid');
+    const timeState = document.getElementById('slot-time-state');
+    if (!timeGrid || !timeState) return;
+
+    const hlc = getSimSlotHlcData().find(h => h.code === simSlotBookingState.selectedHlcCode);
+    if (!hlc) {
+        timeGrid.innerHTML = "";
+        timeState.innerText = "Select HLC to view time slots.";
+        return;
+    }
+    if (!simSlotBookingState.selectedDate) {
+        timeGrid.innerHTML = "";
+        timeState.innerText = "Select date to view slot availability.";
+        return;
+    }
+
+    const slots = Array.isArray(hlc.slots) && hlc.slots.length ? hlc.slots : [
+        "09:00 AM to 09:30 AM", "09:30 AM to 10:00 AM", "10:00 AM to 10:30 AM"
+    ];
+
+    const seed = simSlotBookingState.selectedDate.split("-").join("");
+    const seedNum = Number(seed) || 0;
+    timeGrid.innerHTML = "";
+    let availableCount = 0;
+
+    slots.forEach((slot, idx) => {
+        const score = (seedNum + idx * 7) % 11;
+        const state = score <= 1 ? "full" : (score <= 4 ? "filling" : "available");
+        const selected = simSlotBookingState.selectedSlot === slot;
+        if (state !== "full") availableCount++;
+
+        const btn = document.createElement('button');
+        btn.type = "button";
+
+        if (state === "full") {
+            btn.className = "p-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 text-[11px] font-black text-left cursor-not-allowed";
+            btn.disabled = true;
+        } else if (state === "filling") {
+            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-amber-400 bg-amber-100 ring-2 ring-amber-300' : 'border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800'}`;
+            btn.addEventListener('click', () => {
+                simSlotBookingState.selectedSlot = slot;
+                renderSimSlotTimes();
+            });
+        } else {
+            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-emerald-400 bg-emerald-100 ring-2 ring-emerald-300' : 'border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800'}`;
+            btn.addEventListener('click', () => {
+                simSlotBookingState.selectedSlot = slot;
+                renderSimSlotTimes();
+            });
+        }
+
+        const label = state === "full" ? "Full" : (state === "filling" ? "Filling Fast" : "Available");
+        btn.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+                <span>${slot}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full border ${state === 'full' ? 'bg-white text-slate-500 border-slate-300' : state === 'filling' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'}">${label}</span>
+            </div>
+        `;
+        timeGrid.appendChild(btn);
+    });
+
+    timeState.innerText = simSlotBookingState.selectedSlot
+        ? `Selected slot: ${simSlotBookingState.selectedSlot}`
+        : `${availableCount} slots are currently selectable for ${formatSlotDateDisplay(simSlotBookingState.selectedDate)}.`;
+}
+
+function handleSimBookSlot() {
+    if (!simSlotBookingState.loggedIn) {
+        showToast("Login Required", "Please complete candidate login before booking slot.", "alert-triangle");
+        return;
+    }
+    if (!simSlotBookingState.selectedHlcCode || !simSlotBookingState.selectedDate || !simSlotBookingState.selectedSlot) {
+        showToast("Complete Selection", "Please choose HLC, date, and time slot before confirmation.", "alert-triangle");
+        return;
+    }
+
+    const hlc = getSimSlotHlcData().find(h => h.code === simSlotBookingState.selectedHlcCode);
+    if (!hlc) return;
+
+    const confirmModal = document.getElementById('slot-confirm-modal');
+    if (confirmModal) confirmModal.classList.remove('hidden');
+    document.getElementById('slot-confirm-hlc').innerText = `${hlc.name}, ${hlc.place}`;
+    document.getElementById('slot-confirm-date').innerText = formatSlotDateDisplay(simSlotBookingState.selectedDate);
+    document.getElementById('slot-confirm-time').innerText = simSlotBookingState.selectedSlot;
+    document.getElementById('slot-confirm-category').innerText = simSlotBookingState.selectedCategory;
+}
+
+function closeSimSlotConfirmation() {
+    document.getElementById('slot-confirm-modal')?.classList.add('hidden');
+}
+
+function confirmSimSlotBooking() {
+    const hlc = getSimSlotHlcData().find(h => h.code === simSlotBookingState.selectedHlcCode);
+    if (!hlc) return;
+
+    closeSimSlotConfirmation();
+
+    const serial = `TGSLOT-2026-${Date.now().toString().slice(-6)}`;
+    simSlotBookingState.receipt = {
+        serial,
+        candidateName: maskName(simCandidateName || "Student Demo"),
+        fatherName: maskName("Parent Demo"),
+        hallTicket: maskHallTicket(simHallTicket || "2505XXXX92"),
+        rank: simRank || 6917,
+        hlcName: hlc.name,
+        hlcAddress: `${hlc.place}, ${hlc.district}`,
+        date: simSlotBookingState.selectedDate,
+        time: simSlotBookingState.selectedSlot,
+        category: simSlotBookingState.selectedCategory
+    };
+
+    document.getElementById('slot-receipt-serial').innerText = simSlotBookingState.receipt.serial;
+    document.getElementById('slot-receipt-name').innerText = simSlotBookingState.receipt.candidateName;
+    document.getElementById('slot-receipt-father').innerText = simSlotBookingState.receipt.fatherName;
+    document.getElementById('slot-receipt-ticket').innerText = simSlotBookingState.receipt.hallTicket;
+    document.getElementById('slot-receipt-rank').innerText = simSlotBookingState.receipt.rank;
+    document.getElementById('slot-receipt-hlc').innerText = simSlotBookingState.receipt.hlcName;
+    document.getElementById('slot-receipt-address').innerText = simSlotBookingState.receipt.hlcAddress;
+    document.getElementById('slot-receipt-date').innerText = formatSlotDateDisplay(simSlotBookingState.receipt.date);
+    document.getElementById('slot-receipt-time').innerText = simSlotBookingState.receipt.time;
+    document.getElementById('slot-receipt-category').innerText = simSlotBookingState.receipt.category;
+
+    const smsMessage = document.getElementById('slot-sms-message');
+    if (smsMessage) {
+        smsMessage.innerText = `Your slot booking has been confirmed successfully. HLC: ${hlc.name}, Time: ${simSlotBookingState.receipt.time} on ${formatSlotDateDisplay(simSlotBookingState.receipt.date)}. Please report 10 minutes early.`;
+    }
+
+    document.getElementById('slot-booking-receipt-panel')?.classList.remove('hidden');
+    document.getElementById('slot-sms-card')?.classList.remove('hidden');
+    document.getElementById('slot-verification-guidance')?.classList.remove('hidden');
+
+    // Populate screen 9 details to preserve sequence continuity.
+    const verifiedHlc = document.getElementById('sim-verified-hlc');
+    if (verifiedHlc) verifiedHlc.innerText = `${hlc.name}, ${hlc.place}`;
+    const verifiedDate = document.getElementById('sim-verified-date');
+    if (verifiedDate) verifiedDate.innerText = simSlotBookingState.receipt.date;
+    const verifiedTime = document.getElementById('sim-verified-time');
+    if (verifiedTime) verifiedTime.innerText = simSlotBookingState.receipt.time;
+
+    showToast("Slot Confirmed", `Verification slot booked at ${hlc.name}.`, "check-circle");
+}
+
+function printSimSlotReceipt() {
+    if (!simSlotBookingState.receipt) {
+        showToast("No Receipt", "Please confirm slot booking before printing receipt.", "alert-triangle");
+        return;
+    }
+
+    const r = simSlotBookingState.receipt;
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+        showToast("Popup Blocked", "Enable pop-up windows to print slot booking receipt.", "alert-triangle");
+        return;
+    }
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>TG EAPCET Slot Booking Receipt</title>
+            <style>
+                body { font-family: Arial, sans-serif; color: #0f172a; margin: 24px; }
+                .sheet { max-width: 760px; margin: 0 auto; border: 1px solid #cbd5e1; padding: 22px; }
+                h1 { font-size: 20px; margin: 0 0 8px; }
+                .muted { color: #475569; font-size: 12px; margin-bottom: 16px; }
+                .row { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #e2e8f0; padding: 8px 0; font-size: 13px; }
+                .k { color: #475569; font-weight: 700; }
+                .v { font-weight: 700; text-align: right; }
+                .note { margin-top: 14px; padding: 10px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 12px; font-weight: 700; }
+            </style>
+        </head>
+        <body>
+            <div class="sheet">
+                <h1>TG EAPCET 2026 - Slot Booking Receipt</h1>
+                <p class="muted">Certificate Verification Appointment Slip</p>
+                <div class="row"><span class="k">Serial Number</span><span class="v">${r.serial}</span></div>
+                <div class="row"><span class="k">Candidate Name</span><span class="v">${r.candidateName}</span></div>
+                <div class="row"><span class="k">Father Name</span><span class="v">${r.fatherName}</span></div>
+                <div class="row"><span class="k">Hall Ticket Number</span><span class="v">${r.hallTicket}</span></div>
+                <div class="row"><span class="k">Rank</span><span class="v">${r.rank}</span></div>
+                <div class="row"><span class="k">HLC Name</span><span class="v">${r.hlcName}</span></div>
+                <div class="row"><span class="k">HLC Address</span><span class="v">${r.hlcAddress}</span></div>
+                <div class="row"><span class="k">Slot Date</span><span class="v">${formatSlotDateDisplay(r.date)}</span></div>
+                <div class="row"><span class="k">Slot Time</span><span class="v">${r.time}</span></div>
+                <div class="row"><span class="k">Slot Category</span><span class="v">${r.category}</span></div>
+                <div class="note">Candidate should report 10 minutes before slot timing.</div>
+            </div>
+            <script>
+                window.onload = function() {
+                    window.print();
+                };
+            </script>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
 }
 
 function handleSimComplete() {
@@ -2586,34 +3368,7 @@ function handleSimComplete() {
 }
 
 function populateSimHlcs() {
-    const dist = document.getElementById('sim-hlc-district')?.value || 'HYDERABAD';
-    const hlcSelect = document.getElementById('sim-hlc-name');
-    if (!hlcSelect) return;
-    hlcSelect.innerHTML = "";
-
-    const hlcOptions = {
-        "HYDERABAD": [
-            "JNTUH College of Engineering, Kukatpally",
-            "Government Polytechnic, Masab Tank",
-            "QA College of Engineering"
-        ],
-        "MEDCHAL": [
-            "JN Government Polytechnic, Ramanthapur",
-            "Government Polytechnic, Medchal"
-        ],
-        "RANGAREDDY": [
-            "Government Polytechnic, Ibrahimpatnam",
-            "MVS Government Polytechnic, Mahabubnagar"
-        ]
-    };
-
-    const options = hlcOptions[dist] || [];
-    options.forEach(optVal => {
-        const opt = document.createElement('option');
-        opt.value = optVal;
-        opt.innerText = optVal;
-        hlcSelect.appendChild(opt);
-    });
+    renderSimSlotHlcList();
 }
 
 function triggerSmsAlert() {
@@ -2631,7 +3386,7 @@ function triggerSmsAlert() {
     if (smsBtn) smsBtn.classList.add('hidden');
     if (pwdBtn) pwdBtn.classList.remove('hidden');
     
-    showToast("SMS Delivered", "Login ID: TGE2489543 has been sent to registered mobile!", "message-square");
+    showToast("SMS Delivered", `Login ID: ${maskLoginId("TGE2489543")} has been sent to registered mobile!`, "message-square");
 }
 
 function checkPwdStrength(val) {
@@ -3234,8 +3989,8 @@ function printSimSavedOptions() {
         </head>
         <body onload="window.print()">
             <h2>TG EAPCET 2026 - Locked Options Sheet</h2>
-            <p style="margin: 2px 0;"><strong>Candidate Name:</strong> ${simCandidateName}</p>
-            <p style="margin: 2px 0;"><strong>Hall Ticket Number:</strong> ${simHallTicket}</p>
+            <p style="margin: 2px 0;"><strong>Candidate Name:</strong> ${maskName(simCandidateName)}</p>
+            <p style="margin: 2px 0;"><strong>Hall Ticket Number:</strong> ${maskHallTicket(simHallTicket)}</p>
             <p style="margin: 2px 0;"><strong>Rank:</strong> ${simRank}</p>
             <p style="margin: 2px 0;"><strong>Category:</strong> ${simCategory}</p>
             <hr>
@@ -3443,13 +4198,13 @@ function handleDownloadAllotmentOrder() {
             <table class="bordered">
                 <tr>
                     <td><strong>Candidate Name</strong></td>
-                    <td>${simCandidateName}</td>
+                    <td>${maskName(simCandidateName)}</td>
                     <td><strong>Hall Ticket No</strong></td>
-                    <td>${simHallTicket}</td>
+                    <td>${maskHallTicket(simHallTicket)}</td>
                 </tr>
                 <tr>
                     <td><strong>Father's Name</strong></td>
-                    <td>GANDLA RAMESH</td>
+                    <td>S REDDY</td>
                     <td><strong>Rank</strong></td>
                     <td>${simRank}</td>
                 </tr>
@@ -3538,19 +4293,19 @@ function handlePrintJoiningReport() {
             <table class="details-table">
                 <tr>
                     <td><strong>Hall Ticket Number</strong></td>
-                    <td>${simHallTicket}</td>
+                    <td>${maskHallTicket(simHallTicket)}</td>
                     <td><strong>Rank</strong></td>
                     <td>${simRank}</td>
                 </tr>
                 <tr>
                     <td><strong>Candidate Name</strong></td>
-                    <td>${simCandidateName}</td>
+                    <td>${maskName(simCandidateName)}</td>
                     <td><strong>Father Name</strong></td>
-                    <td>GANDLA RAMESH</td>
+                    <td>${maskName("Parent Demo")}</td>
                 </tr>
                 <tr>
                     <td><strong>Admission Number</strong></td>
-                    <td>ADM-${simHallTicket}-98</td>
+                    <td>${maskAdmissionNo(`ADM-${simHallTicket}-98`)}</td>
                     <td><strong>Admission Date</strong></td>
                     <td>19-07-2025</td>
                 </tr>
@@ -3558,7 +4313,7 @@ function handlePrintJoiningReport() {
                     <td><strong>Category / Gender</strong></td>
                     <td>${simCategory} / BOYS</td>
                     <td><strong>Transaction Hash</strong></td>
-                    <td>TXN${simHallTicket}026859</td>
+                    <td>${maskTransactionId(`TXN${simHallTicket}026859`)}</td>
                 </tr>
             </table>
 
@@ -3599,8 +4354,8 @@ function handlePrintTransactions() {
         </head>
         <body onload="window.print()">
             <h2>TG EAPCET 2026 - Transaction Ledger</h2>
-            <p><strong>Candidate Name:</strong> ${simCandidateName}</p>
-            <p><strong>Hall Ticket No:</strong> ${simHallTicket}</p>
+            <p><strong>Candidate Name:</strong> ${maskName(simCandidateName)}</p>
+            <p><strong>Hall Ticket No:</strong> ${maskHallTicket(simHallTicket)}</p>
             <hr>
             <table>
                 <thead>
@@ -3614,14 +4369,14 @@ function handlePrintTransactions() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>TXN${simHallTicket}102640</td>
+                        <td>${maskTransactionId(`TXN${simHallTicket}102640`)}</td>
                         <td>Counselling Processing Fee</td>
                         <td>28-06-2025</td>
                         <td>₹1,200.00</td>
                         <td>SUCCESS</td>
                     </tr>
                     <tr>
-                        <td>TXN${simHallTicket}026859</td>
+                        <td>${maskTransactionId(`TXN${simHallTicket}026859`)}</td>
                         <td>Tuition Fee Payment</td>
                         <td>19-07-2025</td>
                         <td>₹${simNetFee.toLocaleString('en-IN')}.00</td>
@@ -3658,21 +4413,21 @@ function handlePrintAdmissionSummary() {
             </div>
             
             <div class="details-grid">
-                <div>Candidate Name: <strong>${simCandidateName}</strong></div>
-                <div>Hall Ticket No: <strong>${simHallTicket}</strong></div>
+                <div>Candidate Name: <strong>${maskName(simCandidateName)}</strong></div>
+                <div>Hall Ticket No: <strong>${maskHallTicket(simHallTicket)}</strong></div>
                 <div>Allotted College: <strong>${simAllottedCollegeCode} - ${simAllottedCollege}</strong></div>
                 <div>Allotted Branch: <strong>${simAllottedBranch}</strong></div>
-                <div>Admission Number: <strong>ADM-${simHallTicket}-98</strong></div>
+                <div>Admission Number: <strong>${maskAdmissionNo(`ADM-${simHallTicket}-98`)}</strong></div>
                 <div>Net Tuition Fee Paid: <strong>₹${simNetFee.toLocaleString('en-IN')}.00</strong></div>
             </div>
 
             <h3>Completed Counselling Steps:</h3>
             <div class="stage-list">
-                <div class="stage-item"><span class="checked">✓</span> Processing Fee & Slot Booking (TXN${simHallTicket}102640)</div>
+                <div class="stage-item"><span class="checked">✓</span> Processing Fee & Slot Booking (${maskTransactionId(`TXN${simHallTicket}102640`)})</div>
                 <div class="stage-item"><span class="checked">✓</span> Certificate Helpline Verification (Completed)</div>
-                <div class="stage-item"><span class="checked">✓</span> Web Option Entry (Locked Hash: TGE${simHallTicket}-A9B8C)</div>
+                <div class="stage-item"><span class="checked">✓</span> Web Option Entry (Locked Hash: ${maskLoginId(`TGE${simHallTicket}`)}-A9B8C)</div>
                 <div class="stage-item"><span class="checked">✓</span> Provisional Seat Allotment (Allotted)</div>
-                <div class="stage-item"><span class="checked">✓</span> Tuition Fee Payment (TXN${simHallTicket}026859)</div>
+                <div class="stage-item"><span class="checked">✓</span> Tuition Fee Payment (${maskTransactionId(`TXN${simHallTicket}026859`)})</div>
                 <div class="stage-item"><span class="checked">✓</span> Self-Reporting & Joining Report Generated</div>
             </div>
 
@@ -4263,11 +5018,21 @@ function downloadDocPrepSheet() {
 }
 
 window.showGuideScreen = showGuideScreen;
+window.advanceFeeStep = advanceFeeStep;
+window.simulateFeePaymentProcess = simulateFeePaymentProcess;
+window.simulateVerificationProcess = simulateVerificationProcess;
 window.handleSimLogin = handleSimLogin;
 window.handleSimPayment = handleSimPayment;
 window.handleSimVerify = handleSimVerify;
 window.handleSimProceedToSlotBooking = handleSimProceedToSlotBooking;
+window.initSlotBookingSection = initSlotBookingSection;
+window.handleSimSlotLoginAndShow = handleSimSlotLoginAndShow;
+window.setSimSlotCategory = setSimSlotCategory;
+window.renderSimSlotHlcList = renderSimSlotHlcList;
 window.handleSimBookSlot = handleSimBookSlot;
+window.closeSimSlotConfirmation = closeSimSlotConfirmation;
+window.confirmSimSlotBooking = confirmSimSlotBooking;
+window.printSimSlotReceipt = printSimSlotReceipt;
 window.handleSimComplete = handleSimComplete;
 window.populateSimHlcs = populateSimHlcs;
 window.triggerSmsAlert = triggerSmsAlert;
