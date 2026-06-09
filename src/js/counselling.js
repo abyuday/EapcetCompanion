@@ -165,6 +165,7 @@ window.addEventListener('DOMContentLoaded', () => {
     populateHlcs();
     loadCounsellingData();
     initPlatformUpdatePopup();
+    checkAndShowScheduleUpdatePopup();
 
     // Bind real-time regeneration event listeners
     const rankEl = document.getElementById('student-rank');
@@ -433,36 +434,254 @@ function handleDragEnd() {
 
 // PDF Print Modal Setup
 function openPdfPreviewModal() {
-    if (generatedPreferences.length === 0) {
+    if (!generatedPreferences || generatedPreferences.length === 0) {
         showToast("Error", "Please generate a preference list first.", "alert-circle");
         return;
     }
 
     const name = "Student";
-    const rank = document.getElementById('student-rank').value || "6917";
-    const category = document.getElementById('student-category').value || "EWS";
+    const rank = document.getElementById('student-rank')?.value || "6917";
+    const category = document.getElementById('student-category')?.value || "EWS";
+    const gender = document.querySelector('input[name="student-gender"]:checked')?.value || "Neutral";
+    
+    // Get filter details dynamically from the DOM
+    const activeBranches = [...document.querySelectorAll('.branch-filter-btn.active')].map(btn => btn.dataset.branch).join(', ') || 'All Branches';
+    const activeDistricts = [...document.querySelectorAll('.district-btn.active')].map(btn => btn.dataset.district).join(', ') || 'All Districts';
 
-    document.getElementById('pdf-student').innerText = name;
-    document.getElementById('pdf-rank').innerText = rank.toLocaleString();
-    document.getElementById('pdf-category').innerText = category;
+    const printArea = document.getElementById('pdf-print-area');
+    printArea.innerHTML = ""; // Clear existing
+    printArea.className = "space-y-8";
 
-    // Populate PDF Table Rows
-    const tableBody = document.getElementById('pdf-table-body');
-    tableBody.innerHTML = "";
+    const today = new Date();
+    const dateString = today.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-    generatedPreferences.forEach((item, index) => {
-        const row = document.createElement('tr');
-        row.className = "border-b border-slate-100 hover:bg-slate-50";
-        row.innerHTML = `
-            <td class="py-2.5 px-3 text-center font-bold text-slate-800">${index + 1}</td>
-            <td class="py-2.5 px-3 font-bold text-purple-700">${item.code}</td>
-            <td class="py-2.5 px-3 text-slate-700">${item.name}</td>
-            <td class="py-2.5 px-3"><span class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-semibold">${item.branch}</span></td>
-            <td class="py-2.5 px-3 text-slate-600">${item.district}</td>
-            <td class="py-2.5 px-3 font-semibold text-right">${item.trend.toLocaleString()}</td>
-            <td class="py-2.5 px-3 text-center"><span class="text-slate-500">${item.matchedPhase}</span></td>
+    // Mathematical Printable A4 bounds
+    // standard A4 = 1122px (at 96 DPI). 
+    // Assuming standard 1 inch margins (96px top/bottom) = 930px.
+    const PRINTABLE_HEIGHT = 930;
+
+    // 1. Create a hidden measurement container that exactly mimics the print styling
+    const testContainer = document.createElement('div');
+    testContainer.style.position = 'absolute';
+    testContainer.style.visibility = 'hidden';
+    testContainer.style.top = '-9999px';
+    testContainer.style.width = '768px'; // A4 approximate width (matches max-w-3xl)
+    document.body.appendChild(testContainer);
+
+    // Helper to generate the static header wrapper
+    function getStaticHeaderHtml(pageNum, totalPagesPlaceholder) {
+        return `
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 space-y-6 text-slate-800 text-xs font-sans" id="measure-wrapper">
+                <div id="measure-header">
+                    <div class="flex justify-between items-start border-b-2 border-purple-500 pb-4">
+                        <div>
+                            <span class="text-lg font-black text-purple-600 tracking-wider">EAPCET Counselling Companion - Preference List Report</span>
+                            <span class="block text-[8px] text-slate-500 font-semibold uppercase tracking-widest mt-0.5">Custom Generated Student Document</span>
+                        </div>
+                        <div class="text-right text-[10px] text-slate-500">
+                            <span>Generated: ${dateString}</span>
+                            <span class="block text-[9px] text-slate-500">Page ${pageNum} of ${totalPagesPlaceholder}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="grid grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div><span class="block text-[8px] text-slate-500 font-bold uppercase">EAPCET Rank</span><span class="text-xs font-bold text-slate-800">${Number(rank).toLocaleString()}</span></div>
+                            <div><span class="block text-[8px] text-slate-500 font-bold uppercase">Category</span><span class="text-xs font-bold text-slate-800">${category}</span></div>
+                            <div><span class="block text-[8px] text-slate-500 font-bold uppercase">Gender Quota</span><span class="text-xs font-bold text-slate-800">${gender}</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div><span class="block text-[8px] text-slate-500 font-bold uppercase">Selected Branches</span><span class="text-[9px] font-bold text-slate-800 leading-tight block mt-0.5">${activeBranches}</span></div>
+                            <div><span class="block text-[8px] text-slate-500 font-bold uppercase">Selected Districts</span><span class="text-[9px] font-bold text-slate-800 leading-tight block mt-0.5">${activeDistricts}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="w-full text-left border-collapse" id="measure-table">
+                    <thead id="measure-table-head">
+                        <tr class="bg-slate-50 text-[10px] text-slate-500 uppercase border-b border-slate-200">
+                            <th class="py-2.5 px-3 font-bold text-center w-12">Order</th>
+                            <th class="py-2.5 px-3 font-bold">College Code</th>
+                            <th class="py-2.5 px-3 font-bold">College Name</th>
+                            <th class="py-2.5 px-3 font-bold">Branch</th>
+                            <th class="py-2.5 px-3 font-bold">District</th>
+                            <th class="py-2.5 px-3 font-bold text-right">Previous Last Rank</th>
+                            <th class="py-2.5 px-3 font-bold text-center">Matched Phase</th>
+                        </tr>
+                    </thead>
+                    <tbody id="measure-table-body" class="divide-y divide-slate-200 text-[10px] text-slate-800">
+                        <!-- Rows injected here -->
+                    </tbody>
+                </table>
+            </div>
         `;
-        tableBody.appendChild(row);
+    }
+
+    const disclaimerHtml = `
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex gap-2 items-start mt-8" id="measure-disclaimer">
+            <span class="text-rose-600 font-bold text-sm leading-none">&#x26A0;</span>
+            <div class="space-y-1">
+                <span class="font-bold block text-slate-800 text-[9px]">Disclaimer:</span>
+                <span class="text-[9px] text-slate-500 block leading-relaxed">
+                    This report is generated for counselling guidance purposes only using previous
+                    counselling trends. It does not guarantee college allotments. All final options entry
+                    and registration must be formally declared on the official portal at <span
+                        class="underline text-purple-600 font-semibold">tgeapcet.nic.in</span>.
+                </span>
+            </div>
+        </div>
+    `;
+
+    // 2. Extract Static Heights
+    testContainer.innerHTML = getStaticHeaderHtml('X', 'Y');
+    const measureWrapper = testContainer.querySelector('#measure-wrapper');
+    const staticHeaderHeight = testContainer.querySelector('#measure-header').offsetHeight;
+    const staticTableHeaderHeight = testContainer.querySelector('#measure-table-head').offsetHeight;
+    
+    // Add disclaimer to measure it
+    measureWrapper.insertAdjacentHTML('beforeend', disclaimerHtml);
+    const disclaimerHeight = testContainer.querySelector('#measure-disclaimer').offsetHeight;
+
+    // Determine exact structural padding and gaps inside the wrapper
+    // The wrapper has padding (p-8) and space-y-6 (24px gap).
+    const wrapperPadding = 64; // p-8 is 32px top + 32px bottom
+    const gapSpacing = 24; // space-y-6 adds 24px between Header and Table
+    const staticContentHeight = staticHeaderHeight + staticTableHeaderHeight + wrapperPadding + gapSpacing;
+
+    // 3. Render ALL REAL rows at once into the test container to measure them exactly
+    const allRowHtmls = generatedPreferences.map((item, i) => {
+        const exportIndex = i + 1;
+        return `
+            <tr class="border-b border-slate-200 hover:bg-slate-50" data-export-index="${exportIndex}">
+                <td class="py-2.5 px-3 text-center font-bold text-slate-800">${exportIndex}</td>
+                <td class="py-2.5 px-3 font-bold text-purple-700">${item.code}</td>
+                <td class="py-2.5 px-3 text-slate-800">${item.name}</td>
+                <td class="py-2.5 px-3"><span class="bg-slate-50 text-slate-800 border border-slate-200 px-1.5 py-0.5 rounded font-semibold">${item.branch}</span></td>
+                <td class="py-2.5 px-3 text-slate-500">${item.district}</td>
+                <td class="py-2.5 px-3 font-semibold text-right">${item.trend.toLocaleString()}</td>
+                <td class="py-2.5 px-3 text-center"><span class="text-slate-500">${item.matchedPhase}</span></td>
+            </tr>
+        `;
+    });
+
+    testContainer.innerHTML = getStaticHeaderHtml('X', 'Y');
+    const tbody = testContainer.querySelector('#measure-table-body');
+    tbody.innerHTML = allRowHtmls.join('');
+    
+    // 4. Measure each row individually using offsetHeight
+    const renderedRowElements = tbody.querySelectorAll('tr');
+    const actualRowHeights = [];
+    renderedRowElements.forEach(rowEl => {
+        actualRowHeights.push(rowEl.offsetHeight);
+    });
+
+    // 5. Calculate strict page boundaries
+    let allPages = [];
+    let currentPageHtmls = [];
+    let currentHeight = staticContentHeight;
+    let rowStartIndex = 0;
+
+    for (let i = 0; i < actualRowHeights.length; i++) {
+        const rowHeight = actualRowHeights[i];
+        const isLastRow = (i === actualRowHeights.length - 1);
+        
+        // Add disclaimer height check if it's the very last page
+        const requiredSpace = isLastRow ? (rowHeight + gapSpacing + disclaimerHeight) : rowHeight;
+
+        if (currentHeight + requiredSpace > PRINTABLE_HEIGHT && currentPageHtmls.length > 0) {
+            // Commit page BEFORE this row
+            allPages.push({ 
+                rowsHtml: currentPageHtmls.join(''), 
+                start: rowStartIndex, 
+                end: i - 1, 
+                rowCount: currentPageHtmls.length,
+                measuredHeight: currentHeight
+            });
+            
+            // Start new page
+            currentPageHtmls = [allRowHtmls[i]];
+            rowStartIndex = i;
+            currentHeight = staticContentHeight + rowHeight;
+            
+            if (isLastRow) {
+                allPages.push({ 
+                    rowsHtml: currentPageHtmls.join(''), 
+                    start: rowStartIndex, 
+                    end: i, 
+                    rowCount: currentPageHtmls.length,
+                    measuredHeight: currentHeight + gapSpacing + disclaimerHeight
+                });
+            }
+        } else {
+            currentPageHtmls.push(allRowHtmls[i]);
+            currentHeight += rowHeight;
+            
+            if (isLastRow) {
+                allPages.push({ 
+                    rowsHtml: currentPageHtmls.join(''), 
+                    start: rowStartIndex, 
+                    end: i, 
+                    rowCount: currentPageHtmls.length,
+                    measuredHeight: currentHeight + gapSpacing + disclaimerHeight
+                });
+            }
+        }
+    }
+
+    document.body.removeChild(testContainer);
+    
+    // EXPORT VALIDATION & ANALYTICS
+    const generatedCount = generatedPreferences.length;
+    const exportedCount = allPages.reduce((acc, page) => acc + page.rowCount, 0);
+
+    console.log("=========================================");
+    console.log("       EXACT DOM MEASUREMENT REPORT      ");
+    console.log("=========================================");
+    console.log(`Report Header Height: ${staticHeaderHeight}px`);
+    console.log(`Table Header Height: ${staticTableHeaderHeight}px`);
+    console.log(`Disclaimer Height: ${disclaimerHeight}px`);
+    console.log(`Padding/Gaps Height: ${wrapperPadding + gapSpacing}px`);
+    console.log(`Total Static Page Base Height: ${staticContentHeight}px`);
+    console.log("-----------------------------------------");
+    console.log(`Actual Row Heights Map (First 5): ${actualRowHeights.slice(0, 5).join(', ')} ...`);
+    console.log(`Printable A4 Height Used: ${PRINTABLE_HEIGHT}px`);
+    console.log("-----------------------------------------");
+    console.log(`Total Generated Preferences: ${generatedCount}`);
+    console.log(`Total Exported Preferences: ${exportedCount}`);
+    console.log(`Total PDF Pages: ${allPages.length}`);
+    console.log("-----------------------------------------");
+    
+    allPages.forEach((page, idx) => {
+        const overflowAmount = page.measuredHeight - PRINTABLE_HEIGHT;
+        console.log(`Page ${idx + 1} | Rows ${page.start + 1}-${page.end + 1}`);
+        console.log(`  Container Height: ${page.measuredHeight}px`);
+        console.log(`  Printable Height: ${PRINTABLE_HEIGHT}px`);
+        console.log(`  Overflow Amount: ${overflowAmount > 0 ? overflowAmount + 'px (FAIL)' : overflowAmount + 'px (SAFE)'}`);
+    });
+    console.log("=========================================");
+
+    if (generatedCount !== exportedCount) {
+        console.error(`CRITICAL ABORT: Exported rows (${exportedCount}) does not match generated rows (${generatedCount})!`);
+        showToast("Export Error", "Data duplication detected. Export aborted.", "alert-circle");
+        return;
+    }
+
+    // Build the finalized pages
+    allPages.forEach((pageData, index) => {
+        const isLastPage = (index === allPages.length - 1);
+        const pageBreakClass = !isLastPage ? "print-page-break" : "";
+        
+        let pageHtml = getStaticHeaderHtml(index + 1, allPages.length);
+        pageHtml = pageHtml.replace('<!-- Rows injected here -->', pageData.rowsHtml);
+        if (isLastPage) {
+            pageHtml = pageHtml.replace('</div>\n        `', disclaimerHtml + '</div>\n        `'); // Append disclaimer correctly
+        }
+
+        printArea.innerHTML += `
+            <div class="max-w-3xl mx-auto shadow-sm ${pageBreakClass}">
+                ${pageHtml}
+            </div>
+        `;
     });
 
     document.getElementById('pdf-modal').classList.remove('hidden');
@@ -867,7 +1086,7 @@ function populateHlcDistrictChips() {
     allBtn.className = `hlc-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
         activeHlcDistrictFilter === "ALL" 
             ? "bg-purple-600 text-white shadow-md" 
-            : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
+            : "bg-slate-50 border border-slate-200 text-slate-500 hover:bg-slate-50"
     }`;
     allBtn.innerText = "All Districts";
     allBtn.onclick = () => filterHlcByDistrict("ALL");
@@ -880,7 +1099,7 @@ function populateHlcDistrictChips() {
         btn.className = `hlc-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
             activeHlcDistrictFilter === dist 
                 ? "bg-purple-600 text-white shadow-md" 
-                : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
+                : "bg-slate-50 border border-slate-200 text-slate-500 hover:bg-slate-50"
         }`;
         btn.innerText = dist;
         btn.onclick = () => filterHlcByDistrict(dist);
@@ -892,7 +1111,7 @@ function filterHlcByDistrict(dist) {
     activeHlcDistrictFilter = dist;
     // Toggle active state styling on district chips
     document.querySelectorAll('.hlc-chip').forEach(btn => {
-        btn.className = "hlc-chip px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all";
+        btn.className = "hlc-chip px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-500 hover:bg-slate-50 transition-all";
     });
     
     const chipId = dist === "ALL" 
@@ -993,7 +1212,7 @@ function populateHlcs() {
 
     if (filtered.length === 0) {
         list.innerHTML = `
-            <div class="text-center py-10 text-slate-400 text-xs">
+            <div class="text-center py-10 text-slate-500 text-xs">
                 <i data-lucide="info" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
                 No verified helpline centres match your selection.
             </div>`;
@@ -1017,7 +1236,7 @@ function populateHlcs() {
                 <div class="space-y-2">
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="bg-purple-100/90 text-purple-700 font-extrabold text-[10px] px-2.5 py-0.5 rounded-lg border border-purple-200/30 shadow-sm">${hlc.code}</span>
-                        <span class="bg-slate-100 text-slate-600 font-extrabold text-[10px] px-2.5 py-0.5 rounded-lg border border-slate-200/30 uppercase tracking-wide shadow-sm">${hlc.district}</span>
+                        <span class="bg-slate-50 text-slate-500 font-extrabold text-[10px] px-2.5 py-0.5 rounded-lg border border-slate-200/30 uppercase tracking-wide shadow-sm">${hlc.district}</span>
                         <span class="bg-green-50 text-green-700 font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-green-100 flex items-center gap-1 shadow-sm">
                             <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                             Verified Centre
@@ -1025,28 +1244,28 @@ function populateHlcs() {
                     </div>
                     <h4 class="font-extrabold text-slate-800 text-base leading-snug">${hlc.name}</h4>
                     <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 font-semibold">
-                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${hlc.place}</span>
+                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-500"></i> ${hlc.place}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 self-end sm:self-center">
-                    <div class="p-2 hover:bg-slate-100/80 rounded-xl text-slate-400 transition-colors">
+                    <div class="p-2 hover:bg-slate-50/80 rounded-xl text-slate-500 transition-colors">
                         <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 expand-icon"></i>
                     </div>
                 </div>
             </div>
             
-            <div class="hlc-details hidden mt-5 pt-5 border-t border-slate-100 space-y-4" onclick="event.stopPropagation();">
+            <div class="hlc-details hidden mt-5 pt-5 border-t border-slate-200 space-y-4" onclick="event.stopPropagation();">
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="space-y-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                             <i data-lucide="activity" class="w-3.5 h-3.5"></i> Supported Activities
                         </span>
-                        <p class="text-xs text-slate-600 bg-slate-50 border border-slate-200/40 p-3 rounded-xl font-semibold leading-relaxed">
+                        <p class="text-xs text-slate-500 bg-slate-50 border border-slate-200/40 p-3 rounded-xl font-semibold leading-relaxed">
                             ${hlc.activities}
                         </p>
                     </div>
                     <div class="space-y-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                             <i data-lucide="clock" class="w-3.5 h-3.5"></i> Available Slot Timings
                         </span>
                         <p class="text-xs text-slate-500 leading-relaxed font-semibold">
@@ -1056,10 +1275,10 @@ function populateHlcs() {
                 </div>
                 
                 <div class="space-y-2 pt-2">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                         <i data-lucide="file-check" class="w-3.5 h-3.5"></i> Verification Instructions
                     </span>
-                    <ul class="space-y-1.5 text-xs text-slate-600 list-disc list-inside pl-1 font-semibold leading-relaxed">
+                    <ul class="space-y-1.5 text-xs text-slate-500 list-disc list-inside pl-1 font-semibold leading-relaxed">
                         ${instsHtml}
                     </ul>
                 </div>
@@ -1092,7 +1311,7 @@ function renderMockOptions() {
     container.innerHTML = "";
 
     if (mockOptionsList.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">No options selected yet. Select a college on the left to add!</div>`;
+        container.innerHTML = `<div class="text-center py-10 text-slate-500 text-xs">No options selected yet. Select a college on the left to add!</div>`;
         return;
     }
 
@@ -1244,13 +1463,13 @@ function initBranchExplorer() {
             tagClass = "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100 hover:bg-fuchsia-100";
             cardBorderClass = "hover:border-fuchsia-300/80 hover:shadow-fuchsia-500/5";
         } else if (category === 'Circuit Branches') {
-            tagClass = "bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100";
+            tagClass = "bg-indigo-50 text-indigo-600 border-blue-100 hover:bg-blue-100";
             cardBorderClass = "hover:border-blue-300/80 hover:shadow-blue-500/5";
         } else if (category === 'Core Engineering') {
             tagClass = "bg-amber-50 text-amber-700 border-amber-100 hover:bg-amber-100";
             cardBorderClass = "hover:border-amber-300/80 hover:shadow-amber-500/5";
         } else {
-            tagClass = "bg-slate-50 text-slate-700 border-slate-100 hover:bg-slate-100";
+            tagClass = "bg-slate-50 text-slate-800 border-slate-200 hover:bg-slate-50";
             cardBorderClass = "hover:border-slate-300/80 hover:shadow-slate-500/5";
         }
 
@@ -1266,27 +1485,27 @@ function initBranchExplorer() {
             <div class="space-y-4">
                 <div class="flex items-start justify-between gap-3">
                     <span class="inline-block text-[10px] font-extrabold tracking-wider px-3 py-1 rounded-lg border uppercase transition-colors shadow-sm ${tagClass}">${category}</span>
-                    <span class="text-xs font-black text-slate-400 bg-slate-100/60 px-2 py-0.5 rounded border border-slate-200/40">${branch.code}</span>
+                    <span class="text-xs font-black text-slate-500 bg-slate-50/60 px-2 py-0.5 rounded border border-slate-200/40">${branch.code}</span>
                 </div>
                 <h3 class="font-extrabold text-slate-800 text-xl tracking-tight leading-snug">${branch.name}</h3>
                 <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">${desc}</p>
             </div>
 
-            <div class="pt-6 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div class="pt-6 mt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 shadow-sm">
+                    <div class="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 shadow-sm">
                         <i data-lucide="building" class="w-4 h-4"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Offered At</span>
-                        <span class="text-xs font-black text-slate-700">${collegeCount} Colleges</span>
+                        <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">Offered At</span>
+                        <span class="text-xs font-black text-slate-800">${collegeCount} Colleges</span>
                     </div>
                 </div>
                 ${topCollege ? `
                 <div class="flex items-center gap-2.5 text-right justify-end">
                     <div class="flex flex-col">
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Top Cutoff</span>
-                        <span class="text-xs font-black text-purple-600">${topCutoff.toLocaleString()} <span class="text-[10px] text-slate-400 font-bold uppercase">(${topCollege})</span></span>
+                        <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">Top Cutoff</span>
+                        <span class="text-xs font-black text-purple-600">${topCutoff.toLocaleString()} <span class="text-[10px] text-slate-500 font-bold uppercase">(${topCollege})</span></span>
                     </div>
                     <div class="w-8 h-8 rounded-lg bg-purple-50 border border-purple-100/30 flex items-center justify-center text-purple-500 shadow-sm">
                         <i data-lucide="trending-up" class="w-4 h-4"></i>
@@ -1296,12 +1515,12 @@ function initBranchExplorer() {
             </div>
 
             <!-- Expandable Top 5 Colleges Row -->
-            <div class="mt-4 pt-3 border-t border-dashed border-slate-100/80">
+            <div class="mt-4 pt-3 border-t border-dashed border-slate-200/80">
                 <button onclick="toggleBranchColleges(this, '${branch.code}')" class="w-full text-left text-xs font-black text-purple-600 hover:text-purple-700 flex items-center justify-between group/btn py-1">
                     <span class="flex items-center gap-1.5"><i data-lucide="search" class="w-3.5 h-3.5 text-purple-400 group-hover/btn:text-purple-600 transition-colors"></i> View Top 5 Colleges & Cutoff Trends</span>
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-300"></i>
                 </button>
-                <div class="branch-colleges-list hidden mt-3 space-y-2.5 text-xs text-slate-600 transition-all duration-300">
+                <div class="branch-colleges-list hidden mt-3 space-y-2.5 text-xs text-slate-500 transition-all duration-300">
                     <!-- Populated dynamically on expand -->
                 </div>
             </div>
@@ -1317,7 +1536,7 @@ function toggleBranchColleges(btn, branchCode) {
     
     if (listDiv.classList.contains('hidden')) {
         // Populate top colleges
-        listDiv.innerHTML = `<div class="py-2 text-center text-slate-400">Loading colleges...</div>`;
+        listDiv.innerHTML = `<div class="py-2 text-center text-slate-500">Loading colleges...</div>`;
         listDiv.classList.remove('hidden');
         btn.querySelector('.transition-transform').classList.add('rotate-180');
         
@@ -1345,15 +1564,15 @@ function toggleBranchColleges(btn, branchCode) {
         const top5 = offeringColleges.slice(0, 5);
 
         if (top5.length === 0) {
-            listDiv.innerHTML = `<div class="py-2 text-center text-slate-400">No cutoff data available.</div>`;
+            listDiv.innerHTML = `<div class="py-2 text-center text-slate-500">No cutoff data available.</div>`;
             return;
         }
 
         let html = `
-            <div class="overflow-x-auto rounded-xl border border-slate-100 bg-slate-50/50 p-2">
+            <div class="overflow-x-auto rounded-xl border border-slate-200 bg-slate-50/50 p-2">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="text-[9px] font-bold text-slate-400 uppercase border-b border-slate-200/50">
+                        <tr class="text-[9px] font-bold text-slate-500 uppercase border-b border-slate-200/50">
                             <th class="pb-1.5 pl-2">College</th>
                             <th class="pb-1.5 text-center">Phase 1</th>
                             <th class="pb-1.5 text-center">Phase 2</th>
@@ -1365,14 +1584,14 @@ function toggleBranchColleges(btn, branchCode) {
 
         top5.forEach(col => {
             html += `
-                <tr class="hover:bg-slate-100/50">
+                <tr class="hover:bg-slate-50/50">
                     <td class="py-2 pl-2">
                         <span class="font-extrabold text-purple-700">${col.code}</span>
-                        <span class="block text-[10px] text-slate-400 font-medium truncate max-w-[150px]" title="${col.name}">${col.name}</span>
+                        <span class="block text-[10px] text-slate-500 font-medium truncate max-w-[150px]" title="${col.name}">${col.name}</span>
                     </td>
-                    <td class="py-2 text-center font-semibold text-slate-700">${col.p1 ? col.p1.toLocaleString() : '-'}</td>
-                    <td class="py-2 text-center font-semibold text-slate-700">${col.p2 ? col.p2.toLocaleString() : '-'}</td>
-                    <td class="py-2 text-center font-semibold text-slate-700">${col.final ? col.final.toLocaleString() : '-'}</td>
+                    <td class="py-2 text-center font-semibold text-slate-800">${col.p1 ? col.p1.toLocaleString() : '-'}</td>
+                    <td class="py-2 text-center font-semibold text-slate-800">${col.p2 ? col.p2.toLocaleString() : '-'}</td>
+                    <td class="py-2 text-center font-semibold text-slate-800">${col.final ? col.final.toLocaleString() : '-'}</td>
                 </tr>
             `;
         });
@@ -1395,10 +1614,10 @@ function filterBranches(category, btn) {
     // Toggle button states using classList
     document.querySelectorAll('.branch-filter-btn').forEach(b => {
         b.classList.remove('bg-purple-600', 'text-white', 'shadow-md', 'shadow-purple-100/50', 'scale-[1.02]');
-        b.classList.add('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:border-purple-200');
+        b.classList.add('bg-white', 'border-slate-200', 'text-slate-500', 'hover:bg-slate-50', 'hover:border-purple-200');
     });
     btn.classList.add('bg-purple-600', 'text-white', 'shadow-md', 'shadow-purple-100/50', 'scale-[1.02]');
-    btn.classList.remove('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:border-purple-200');
+    btn.classList.remove('bg-white', 'border-slate-200', 'text-slate-500', 'hover:bg-slate-50', 'hover:border-purple-200');
 
     applyBranchFilters();
 }
@@ -1465,7 +1684,7 @@ function populateGeneratorBranches() {
         const checkedStr = isChecked ? "checked" : "";
 
         const label = document.createElement('label');
-        const activeClass = isChecked ? "chip-glow-selected" : "bg-slate-50 border-slate-200 text-slate-600";
+        const activeClass = isChecked ? "chip-glow-selected" : "bg-slate-50 border-slate-200 text-slate-500";
         label.className = `flex items-center gap-1.5 px-4 py-2 border rounded-xl cursor-pointer text-xs font-bold transition-all branch-option-chip ${activeClass}`;
         label.setAttribute('data-code', branch.code.toLowerCase());
         label.setAttribute('data-name', branch.name.toLowerCase());
@@ -1527,13 +1746,13 @@ function populateGeneratorDistricts() {
         const count = districtCounts[dist];
 
         const label = document.createElement('label');
-        const activeClass = isDefault ? "chip-glow-selected" : "bg-slate-50 border-slate-200 text-slate-600";
+        const activeClass = isDefault ? "chip-glow-selected" : "bg-slate-50 border-slate-200 text-slate-500";
         label.className = `flex items-center gap-2 p-2.5 border rounded-xl text-xs font-bold cursor-pointer transition-all district-option-chip ${activeClass}`;
         label.setAttribute('data-district', dist.toLowerCase());
         label.innerHTML = `
             <input type="checkbox" value="${dist}" ${checkedStr} onchange="onGeneratorSelectionChange()"
                 class="rounded border-slate-300 text-purple-600 focus:ring-purple-400 w-4 h-4 transition-all">
-            <span class="truncate">${dist} <span class="text-[10px] text-slate-400 font-bold">(${count})</span></span>
+            <span class="truncate">${dist} <span class="text-[10px] text-slate-500 font-bold">(${count})</span></span>
         `;
         container.appendChild(label);
     });
@@ -1566,10 +1785,10 @@ function updateChipsStyling() {
         if (input && input.checked) {
             branchSelected++;
             chip.classList.add('chip-glow-selected');
-            chip.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-600');
+            chip.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-500');
         } else {
             chip.classList.remove('chip-glow-selected');
-            chip.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-600');
+            chip.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-500');
         }
     });
     
@@ -1588,10 +1807,10 @@ function updateChipsStyling() {
         if (input && input.checked) {
             districtSelected++;
             chip.classList.add('chip-glow-selected');
-            chip.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-600');
+            chip.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-500');
         } else {
             chip.classList.remove('chip-glow-selected');
-            chip.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-600');
+            chip.classList.add('bg-slate-50', 'border-slate-200', 'text-slate-500');
         }
     });
     
@@ -1690,9 +1909,9 @@ function renderBranchExplorerModal() {
             <div class="border-b border-slate-200/60 pb-3">
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-purple-600 animate-pulse"></span> ${cat}
-                    <span class="text-[10px] font-extrabold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/50 ml-1">${catBranches.length} Branches</span>
+                    <span class="text-[10px] font-extrabold text-slate-500 bg-slate-50 px-2 py-0.5 rounded border border-slate-200/50 ml-1">${catBranches.length} Branches</span>
                 </h3>
-                <p class="text-[11px] text-slate-400 font-semibold mt-1">${categoryDescriptions[cat]}</p>
+                <p class="text-[11px] text-slate-500 font-semibold mt-1">${categoryDescriptions[cat]}</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="modal-cat-grid-${cat.replace(/[^a-zA-Z]/g, '')}">
             </div>
@@ -1722,7 +1941,7 @@ function renderBranchExplorerModal() {
                     <div class="flex items-start justify-between">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-black text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-100/50">${branch.code}</span>
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 border border-slate-200/50 px-2 py-0.5 rounded">${count} Colleges</span>
+                            <span class="text-[10px] font-bold text-slate-500 bg-slate-50 border border-slate-200/50 px-2 py-0.5 rounded">${count} Colleges</span>
                         </div>
                         <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-all ${isChecked ? 'bg-purple-600 border-purple-600 text-white check-pop' : 'border-slate-300'}" id="modal-branch-check-${branch.code}">
                             ${isChecked ? '<i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>' : ''}
@@ -1730,16 +1949,16 @@ function renderBranchExplorerModal() {
                     </div>
                     <div class="space-y-1">
                         <h4 class="font-extrabold text-slate-800 text-xs sm:text-sm leading-snug">${branch.name}</h4>
-                        <p class="text-[11px] text-slate-400 font-semibold leading-relaxed line-clamp-2" title="${desc}">${desc}</p>
+                        <p class="text-[11px] text-slate-500 font-semibold leading-relaxed line-clamp-2" title="${desc}">${desc}</p>
                     </div>
                 </div>
                 
-                <div class="mt-4 pt-3.5 border-t border-slate-100/80 space-y-1.5">
-                    <div class="flex items-center justify-between text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">
+                <div class="mt-4 pt-3.5 border-t border-slate-200/80 space-y-1.5">
+                    <div class="flex items-center justify-between text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">
                         <span>Colleges Density Ratio</span>
                         <span class="text-purple-600">${popularityPct}%</span>
                     </div>
-                    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden">
                         <div class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all duration-500" style="width: ${popularityPct}%"></div>
                     </div>
                 </div>
@@ -1927,7 +2146,7 @@ function renderDistrictExplorerModal() {
             <div class="flex-1 min-w-0 mr-4 flex flex-col justify-between h-full space-y-1.5">
                 <h4 class="font-extrabold text-slate-800 text-xs sm:text-sm leading-snug break-words">${dist}</h4>
                 <div class="flex flex-wrap items-center gap-1.5 mt-auto">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">${count} Colleges</span>
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider">${count} Colleges</span>
                     <span class="text-[9px] font-extrabold border px-2 py-0.5 rounded-md whitespace-nowrap ${densityBadgeClass}">${densityText}</span>
                 </div>
             </div>
@@ -2481,11 +2700,11 @@ function selectSimMode(mode) {
 
     if (mode === 'complete') {
         if (completeBtn) completeBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 bg-white text-indigo-600 shadow-sm border border-slate-200/45";
-        if (quickBtn) quickBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900";
+        if (quickBtn) quickBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 text-slate-500 hover:text-slate-800";
         if (completePanel) completePanel.classList.remove('hidden');
         if (quickPanel) quickPanel.classList.add('hidden');
     } else {
-        if (completeBtn) completeBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900";
+        if (completeBtn) completeBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 text-slate-500 hover:text-slate-800";
         if (quickBtn) quickBtn.className = "w-1/2 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 bg-white text-indigo-600 shadow-sm border border-slate-200/45";
         if (completePanel) completePanel.classList.add('hidden');
         if (quickPanel) quickPanel.classList.remove('hidden');
@@ -2667,7 +2886,7 @@ function advanceFeeStep(stepNum) {
         if (line) {
             line.className = i < stepNum 
                 ? "w-8 h-1 bg-purple-600 rounded-full transition-all"
-                : "w-8 h-1 bg-slate-100 rounded-full transition-all";
+                : "w-8 h-1 bg-slate-50 rounded-full transition-all";
         }
     }
 
@@ -2772,19 +2991,19 @@ function simulateVerificationProcess() {
                     
                     <div class="bg-white rounded-xl p-4 text-left border border-emerald-100 mb-6 shadow-sm">
                         <div class="flex justify-between py-2 border-b border-slate-50">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Candidate Name</span>
-                            <span class="text-xs font-black text-slate-700">${simCandidateName || 'ABYU REDDY'}</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Candidate Name</span>
+                            <span class="text-xs font-black text-slate-800">${simCandidateName || 'ABYU REDDY'}</span>
                         </div>
                         <div class="flex justify-between py-2 border-b border-slate-50">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Transaction ID</span>
-                            <span class="text-xs font-black text-slate-700">${maskTransactionId("TXN984530284")}</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Transaction ID</span>
+                            <span class="text-xs font-black text-slate-800">${maskTransactionId("TXN984530284")}</span>
                         </div>
                         <div class="flex justify-between py-2 border-b border-slate-50">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Amount Paid</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Amount Paid</span>
                             <span class="text-xs font-black text-emerald-600">₹1,200.00</span>
                         </div>
                         <div class="flex justify-between py-2">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Status</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Status</span>
                             <span class="text-[10px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">SUCCESS</span>
                         </div>
                     </div>
@@ -2967,7 +3186,7 @@ function updateSimSlotCategoryButtons() {
         if (cat === current) {
             btn.className = "slot-category-btn px-3 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-black transition-all";
         } else {
-            btn.className = "slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-black transition-all hover:bg-slate-50";
+            btn.className = "slot-category-btn px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 text-xs font-black transition-all hover:bg-slate-50";
         }
     });
 
@@ -3054,11 +3273,11 @@ function renderSimSlotHlcList() {
                     <p class="text-xs font-black text-slate-800">${hlc.name}</p>
                     <p class="text-[11px] text-slate-500 font-semibold mt-1">${hlc.place}, ${hlc.district}</p>
                 </div>
-                <span class="text-[10px] px-2.5 py-1 rounded-full font-black ${supports ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500 border border-slate-200'}">${capacityLabel}</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-black ${supports ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-50 text-slate-500 border border-slate-200'}">${capacityLabel}</span>
             </div>
             <div class="flex flex-wrap gap-2 mt-3 text-[10px] font-bold">
-                <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${(hlc.slots || []).length || 16} slots/day</span>
-                <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${hlc.code || 'HLC'}</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-50 text-slate-500 border border-slate-200">${(hlc.slots || []).length || 16} slots/day</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-50 text-slate-500 border border-slate-200">${hlc.code || 'HLC'}</span>
             </div>
         `;
         btn.addEventListener('click', () => {
@@ -3141,7 +3360,7 @@ function renderSimSlotCalendar() {
         btn.title = cell.state === "available" ? "Available for booking" : (cell.state === "full" ? "Full - choose another date" : "Unavailable for selected category");
         const selectedClass = simSlotBookingState.selectedDate === cell.key ? "ring-2 ring-indigo-500" : "";
         if (cell.state === "available") {
-            btn.className = `p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-[11px] font-black text-center transition-all hover:bg-emerald-100 ${selectedClass}`;
+            btn.className = `p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-black text-center transition-all hover:bg-emerald-100 ${selectedClass}`;
             btn.addEventListener('click', () => {
                 simSlotBookingState.selectedDate = cell.key;
                 simSlotBookingState.selectedSlot = "";
@@ -3149,10 +3368,10 @@ function renderSimSlotCalendar() {
                 renderSimSlotTimes();
             });
         } else if (cell.state === "full") {
-            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 text-[11px] font-black text-center cursor-not-allowed";
+            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 text-[11px] font-black text-center cursor-not-allowed";
             btn.disabled = true;
         } else {
-            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-slate-400 text-[11px] font-black text-center cursor-not-allowed";
+            btn.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-slate-500 text-[11px] font-black text-center cursor-not-allowed";
             btn.disabled = true;
         }
         btn.innerText = cell.label;
@@ -3200,16 +3419,16 @@ function renderSimSlotTimes() {
         btn.type = "button";
 
         if (state === "full") {
-            btn.className = "p-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 text-[11px] font-black text-left cursor-not-allowed";
+            btn.className = "p-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 text-[11px] font-black text-left cursor-not-allowed";
             btn.disabled = true;
         } else if (state === "filling") {
-            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-amber-400 bg-amber-100 ring-2 ring-amber-300' : 'border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800'}`;
+            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-amber-400 bg-amber-100 ring-2 ring-amber-300' : 'border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-700'}`;
             btn.addEventListener('click', () => {
                 simSlotBookingState.selectedSlot = slot;
                 renderSimSlotTimes();
             });
         } else {
-            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-emerald-400 bg-emerald-100 ring-2 ring-emerald-300' : 'border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800'}`;
+            btn.className = `p-3 rounded-xl border text-[11px] font-black text-left transition-all ${selected ? 'border-emerald-400 bg-emerald-100 ring-2 ring-emerald-300' : 'border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700'}`;
             btn.addEventListener('click', () => {
                 simSlotBookingState.selectedSlot = slot;
                 renderSimSlotTimes();
@@ -3220,7 +3439,7 @@ function renderSimSlotTimes() {
         btn.innerHTML = `
             <div class="flex items-center justify-between gap-2">
                 <span>${slot}</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full border ${state === 'full' ? 'bg-white text-slate-500 border-slate-300' : state === 'filling' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'}">${label}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full border ${state === 'full' ? 'bg-white text-slate-500 border-slate-300' : state === 'filling' ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-emerald-100 text-emerald-700 border-emerald-300'}">${label}</span>
             </div>
         `;
         timeGrid.appendChild(btn);
@@ -3522,7 +3741,7 @@ function initSimFilters() {
                 <input type="checkbox" value="${d}" ${active ? 'checked' : ''} 
                     onchange="toggleSimDistrict('${d}', this.checked)"
                     class="rounded text-purple-600 focus:ring-purple-400 w-4 h-4 border-slate-300">
-                <span class="text-xs font-bold text-slate-700">${d}</span>
+                <span class="text-xs font-bold text-slate-800">${d}</span>
             </label>
         `;
         distContainer.appendChild(div);
@@ -3580,14 +3799,14 @@ function renderSimWorkspace() {
     const selectedBranchesArray = [...simSelectedBranches].sort();
 
     if (selectedDistrictsArray.length === 0 && selectedBranchesArray.length === 0) {
-        table.innerHTML = `<tr><td class="p-6 text-center text-slate-400 font-bold text-xs">Please select at least one district and course branch first.</td></tr>`;
+        table.innerHTML = `<tr><td class="p-6 text-center text-slate-500 font-bold text-xs">Please select at least one district and course branch first.</td></tr>`;
         return;
     }
 
     // Header Row
     let headHtml = `
         <thead>
-            <tr class="bg-slate-100 border-b border-slate-200 sticky top-0 z-20 text-[10px] uppercase tracking-wider text-slate-500">
+            <tr class="bg-slate-50 border-b border-slate-200 sticky top-0 z-20 text-[10px] uppercase tracking-wider text-slate-500">
                 <th class="py-3.5 px-3 border-r border-slate-200 text-center font-black sticky-col-sno" style="width: 50px;">S.No</th>
                 <th class="py-3.5 px-3 border-r border-slate-200 font-black text-center sticky-col-code" style="width: 80px;">College Code</th>
                 <th class="py-3.5 px-3 border-r border-slate-200 font-black text-left sticky-col-name">College Name</th>
@@ -3609,7 +3828,7 @@ function renderSimWorkspace() {
     });
 
     if (matchedColleges.length === 0) {
-        table.innerHTML = `<tr><td class="p-6 text-center text-slate-400 font-bold text-xs">No matching colleges found for selected criteria.</td></tr>`;
+        table.innerHTML = `<tr><td class="p-6 text-center text-slate-500 font-bold text-xs">No matching colleges found for selected criteria.</td></tr>`;
         return;
     }
 
@@ -3619,10 +3838,10 @@ function renderSimWorkspace() {
         let typeBg = "bg-yellow-50/20 hover:bg-yellow-100/40"; 
         let borderStyle = "border-l-4 border-l-yellow-400";
         if (type === "GOV") {
-            typeBg = "bg-blue-50/20 hover:bg-blue-100/40";
+            typeBg = "bg-indigo-50/20 hover:bg-blue-100/40";
             borderStyle = "border-l-4 border-l-blue-500";
         } else if (type === "Self-Finance") {
-            typeBg = "bg-slate-50 hover:bg-slate-100/70";
+            typeBg = "bg-slate-50 hover:bg-slate-50/70";
             borderStyle = "border-l-4 border-l-slate-400";
         } else if (type === "Girls") {
             typeBg = "bg-pink-50/20 hover:bg-pink-100/40";
@@ -3634,9 +3853,9 @@ function renderSimWorkspace() {
 
         bodyHtml += `<tr class="border-b border-slate-200 ${typeBg} transition-colors">`;
         bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 text-center font-bold text-[10px] ${borderStyle} sticky-col-sno">${idx + 1}</td>`;
-        bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-mono text-[11px] font-black text-slate-900 bg-slate-100/30 text-center sticky-col-code">${c.inst_code}</td>`;
+        bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-mono text-[11px] font-black text-slate-800 bg-slate-50/30 text-center sticky-col-code">${c.inst_code}</td>`;
         bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-bold text-slate-800 text-[11px] truncate max-w-[220px] sticky-col-name" title="${c.name}">${c.name}</td>`;
-        bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-bold text-slate-600 text-[10px] text-center">${c.district}</td>`;
+        bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-bold text-slate-500 text-[10px] text-center">${c.district}</td>`;
         bodyHtml += `<td class="py-3 px-3 border-r border-slate-200 font-bold text-[10px] text-center">${type}</td>`;
 
         selectedBranchesArray.forEach(bCode => {
@@ -3850,7 +4069,7 @@ function openSimViewOptionsModal() {
 
     container.innerHTML = "";
     if (simSavedOptions.length === 0) {
-        container.innerHTML = `<div class="text-center py-8 text-slate-400 font-bold text-xs">No options selected yet.</div>`;
+        container.innerHTML = `<div class="text-center py-8 text-slate-500 font-bold text-xs">No options selected yet.</div>`;
     } else {
         simSavedOptions.forEach(o => {
             const item = document.createElement('div');
@@ -3860,7 +4079,7 @@ function openSimViewOptionsModal() {
                     <span class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-bold">${o.priority}</span>
                     <div>
                         <span class="block text-slate-800 font-bold">${o.collegeCode} - ${o.branch}</span>
-                        <span class="text-[9px] text-slate-400 block">${o.collegeName}</span>
+                        <span class="text-[9px] text-slate-500 block">${o.collegeName}</span>
                     </div>
                 </div>
                 <button onclick="removeSimOption('${o.collegeCode}', '${o.branch}')" class="text-rose-600 hover:text-rose-700 font-bold text-xs">Delete</button>
@@ -3948,10 +4167,10 @@ function handleSimLogoutFlow() {
                     <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">${o.priority}</span>
                     <div>
                         <span class="block text-slate-800 font-bold">${o.collegeCode} - ${o.branch}</span>
-                        <span class="text-[9px] text-slate-400 block">${o.collegeName}</span>
+                        <span class="text-[9px] text-slate-500 block">${o.collegeName}</span>
                     </div>
                 </div>
-                <span class="text-[10px] text-slate-400 font-bold">${o.district}</span>
+                <span class="text-[10px] text-slate-500 font-bold">${o.district}</span>
             `;
             container.appendChild(item);
         });
@@ -4450,7 +4669,7 @@ function toggleScheduleTab(tabIndex) {
             btn.className = "px-6 py-3 rounded-xl text-xs font-extrabold transition-all border border-indigo-200 bg-indigo-50/80 text-indigo-700 shadow-sm flex items-center gap-2";
             content.classList.remove('hidden');
         } else {
-            btn.className = "px-6 py-3 rounded-xl text-xs font-extrabold transition-all border border-transparent text-slate-600 hover:bg-slate-100 flex items-center gap-2";
+            btn.className = "px-6 py-3 rounded-xl text-xs font-extrabold transition-all border border-transparent text-slate-500 hover:bg-slate-50 flex items-center gap-2";
             content.classList.add('hidden');
         }
     }
@@ -5093,3 +5312,53 @@ window.toggleInsight = toggleInsight;
 window.scrollToCoreModules = scrollToCoreModules;
 
 
+
+
+const NOTIFICATION_VERSION = "SCHEDULE_UPDATE_JUNE_2026_V1";
+
+function checkAndShowScheduleUpdatePopup() {
+    try {
+        const seen = localStorage.getItem('eapcet_schedule_notification_seen');
+        if (seen === NOTIFICATION_VERSION) return;
+    } catch (e) {
+        console.error("LocalStorage error:", e);
+    }
+
+    // Small delay for better UX after page load
+    setTimeout(() => {
+        const popup = document.getElementById('schedule-update-popup');
+        const card = document.getElementById('schedule-update-card');
+        if (!popup || !card) return;
+
+        popup.classList.remove('hidden');
+        
+        // Trigger reflow for fade animation
+        void popup.offsetWidth;
+        
+        popup.classList.remove('opacity-0');
+        popup.classList.add('opacity-100');
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+        
+    }, 1000);
+}
+
+function closeScheduleUpdatePopup() {
+    const popup = document.getElementById('schedule-update-popup');
+    const card = document.getElementById('schedule-update-card');
+    if (!popup || !card) return;
+
+    popup.classList.remove('opacity-100');
+    popup.classList.add('opacity-0');
+    card.classList.remove('scale-100');
+    card.classList.add('scale-95');
+
+    setTimeout(() => {
+        popup.classList.add('hidden');
+        try {
+            localStorage.setItem('eapcet_schedule_notification_seen', NOTIFICATION_VERSION);
+        } catch (e) {}
+    }, 300); // Wait for transition
+}
+
+window.closeScheduleUpdatePopup = closeScheduleUpdatePopup;

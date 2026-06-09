@@ -105,25 +105,6 @@ h5 {
     background: #94a3b8;
 }
 
-/* Print Media Styles for PDF Export */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #pdf-print-area,
-    #pdf-print-area * {
-        visibility: visible;
-    }
-
-    #pdf-print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-}
-
 /* HLC Interactive Cards & Pulse Animations */
 .hlc-card-interactive {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -534,4 +515,79 @@ h5 {
 .divider-expanded {
     background: linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.6) 100%);
     backdrop-filter: blur(8px);
+}
+
+/* Keep printable documents always light */
+@media print {
+    html,
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+}
+
+/* =========================================================
+   PDF Print Pipeline Fix
+   ========================================================= */
+@media print {
+    /* 1. Hide the entire background website so it doesn't dictate page count or bleed through */
+    body * {
+        visibility: hidden !important;
+    }
+    
+    /* 2. Unhide the modal tree */
+    #pdf-modal, #pdf-modal * {
+        visibility: visible !important;
+    }
+    
+    /* 3. Break out of the 'fixed' and 'overflow' traps so the browser can natively paginate */
+    #pdf-modal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: white !important;
+        display: block !important;
+    }
+    
+    /* 4. Ensure internal scrolling containers are unpacked to flat blocks */
+    #pdf-scrollable,
+    #pdf-print-area,
+    .overflow-y-auto, 
+    .max-h-\[90vh\], 
+    .flex-grow,
+    .overflow-hidden {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+        display: block !important;
+        box-shadow: none !important;
+    }
+    
+    /* 5. Force the page break utility class to physically snap to a new page */
+    .print-page-break {
+        page-break-after: always !important;
+        break-after: page !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* 6. Hide the modal bottom control row (Cancel / Print buttons) */
+    #pdf-modal .border-t.flex.justify-end {
+        display: none !important;
+    }
+    
+    /* Ensure the print area spans the full page */
+    #pdf-print-area {
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+    }
 }
